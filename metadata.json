@@ -1,0 +1,6 @@
+{
+  "name": "CreaseHQ - Cricket Scorekeeper & Match Analytics",
+  "description": "Professional cricket scoring engine, real-time match telemetry, extras and 10 dismissal methods, live wagon wheel, scorecards, and historical analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

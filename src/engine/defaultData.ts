@@ -1,0 +1,1086 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { Match, Team, Innings, Player } from '../types/cricket';
+
+// --- INTERNATIONAL TEAMS (15 PLAYERS EACH: 11 STARTING XI + 4 SUBSTITUTES) ---
+
+export const englandTeam: Team = {
+  id: 'team-eng',
+  name: 'England',
+  shortName: 'ENG',
+  color: '#3b82f6',
+  players: [
+    { id: 'eng-1', name: 'Jos Buttler', shortName: 'J. Buttler', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'eng-2', name: 'Phil Salt', shortName: 'P. Salt', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'eng-3', name: 'Will Jacks', shortName: 'W. Jacks', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'eng-4', name: 'Harry Brook', shortName: 'H. Brook', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'eng-5', name: 'Liam Livingstone', shortName: 'L. Livingstone', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'eng-6', name: 'Sam Curran', shortName: 'S. Curran', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm medium-fast' },
+    { id: 'eng-7', name: 'Chris Jordan', shortName: 'C. Jordan', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    { id: 'eng-8', name: 'Adil Rashid', shortName: 'A. Rashid', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'eng-9', name: 'Jofra Archer', shortName: 'J. Archer', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'eng-10', name: 'Reece Topley', shortName: 'R. Topley', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm fast-medium' },
+    { id: 'eng-11', name: 'Mark Wood', shortName: 'M. Wood', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    // 4 Substitutes
+    { id: 'eng-12', name: 'Ben Duckett', shortName: 'B. Duckett', role: 'batter', battingStyle: 'Left-hand bat', isSubstitute: true },
+    { id: 'eng-13', name: 'Moeen Ali', shortName: 'M. Ali', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+    { id: 'eng-14', name: 'Tom Hartley', shortName: 'T. Hartley', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+    { id: 'eng-15', name: 'Gus Atkinson', shortName: 'G. Atkinson', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+  ],
+};
+
+export const australiaTeam: Team = {
+  id: 'team-aus',
+  name: 'Australia',
+  shortName: 'AUS',
+  color: '#eab308',
+  players: [
+    { id: 'aus-1', name: 'David Warner', shortName: 'D. Warner', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'aus-2', name: 'Travis Head', shortName: 'T. Head', role: 'batter', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'aus-3', name: 'Mitchell Marsh', shortName: 'M. Marsh', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'aus-4', name: 'Glenn Maxwell', shortName: 'G. Maxwell', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'aus-5', name: 'Marcus Stoinis', shortName: 'M. Stoinis', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'aus-6', name: 'Tim David', shortName: 'T. David', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'aus-7', name: 'Matthew Wade', shortName: 'M. Wade', role: 'wicketkeeper', battingStyle: 'Left-hand bat' },
+    { id: 'aus-8', name: 'Pat Cummins', shortName: 'P. Cummins', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'aus-9', name: 'Mitchell Starc', shortName: 'M. Starc', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast' },
+    { id: 'aus-10', name: 'Adam Zampa', shortName: 'A. Zampa', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'aus-11', name: 'Josh Hazlewood', shortName: 'J. Hazlewood', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    // 4 Substitutes
+    { id: 'aus-12', name: 'Ashton Agar', shortName: 'A. Agar', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+    { id: 'aus-13', name: 'Nathan Ellis', shortName: 'N. Ellis', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium', isSubstitute: true },
+    { id: 'aus-14', name: 'Josh Inglis', shortName: 'J. Inglis', role: 'wicketkeeper', battingStyle: 'Right-hand bat', isSubstitute: true },
+    { id: 'aus-15', name: 'Cameron Green', shortName: 'C. Green', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium', isSubstitute: true },
+  ],
+};
+
+export const indiaTeam: Team = {
+  id: 'team-ind',
+  name: 'India',
+  shortName: 'IND',
+  color: '#0284c7',
+  players: [
+    { id: 'ind-1', name: 'Rohit Sharma', shortName: 'R. Sharma', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'ind-2', name: 'Yashasvi Jaiswal', shortName: 'Y. Jaiswal', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'ind-3', name: 'Virat Kohli', shortName: 'V. Kohli', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'ind-4', name: 'Suryakumar Yadav', shortName: 'S. Yadav', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'ind-5', name: 'Rishabh Pant', shortName: 'R. Pant', role: 'wicketkeeper', battingStyle: 'Left-hand bat' },
+    { id: 'ind-6', name: 'Hardik Pandya', shortName: 'H. Pandya', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast' },
+    { id: 'ind-7', name: 'Ravindra Jadeja', shortName: 'R. Jadeja', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'ind-8', name: 'Axar Patel', shortName: 'A. Patel', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'ind-9', name: 'Kuldeep Yadav', shortName: 'K. Yadav', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm wrist spin' },
+    { id: 'ind-10', name: 'Jasprit Bumrah', shortName: 'J. Bumrah', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'ind-11', name: 'Arshdeep Singh', shortName: 'A. Singh', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm medium-fast' },
+    // 4 Substitutes
+    { id: 'ind-12', name: 'Sanju Samson', shortName: 'S. Samson', role: 'wicketkeeper', battingStyle: 'Right-hand bat', isSubstitute: true },
+    { id: 'ind-13', name: 'Mohammed Siraj', shortName: 'M. Siraj', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+    { id: 'ind-14', name: 'Shivam Dube', shortName: 'S. Dube', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm medium', isSubstitute: true },
+    { id: 'ind-15', name: 'Yuzvendra Chahal', shortName: 'Y. Chahal', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak', isSubstitute: true },
+  ],
+};
+
+export const southAfricaTeam: Team = {
+  id: 'team-sa',
+  name: 'South Africa',
+  shortName: 'SA',
+  color: '#15803d',
+  players: [
+    { id: 'sa-1', name: 'Quinton de Kock', shortName: 'Q. de Kock', role: 'wicketkeeper', battingStyle: 'Left-hand bat' },
+    { id: 'sa-2', name: 'Reeza Hendricks', shortName: 'R. Hendricks', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'sa-3', name: 'Aiden Markram', shortName: 'A. Markram', role: 'batter', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'sa-4', name: 'Heinrich Klaasen', shortName: 'H. Klaasen', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'sa-5', name: 'David Miller', shortName: 'D. Miller', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'sa-6', name: 'Tristan Stubbs', shortName: 'T. Stubbs', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'sa-7', name: 'Marco Jansen', shortName: 'M. Jansen', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm fast' },
+    { id: 'sa-8', name: 'Keshav Maharaj', shortName: 'K. Maharaj', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'sa-9', name: 'Kagiso Rabada', shortName: 'K. Rabada', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'sa-10', name: 'Anrich Nortje', shortName: 'A. Nortje', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'sa-11', name: 'Tabraiz Shamsi', shortName: 'T. Shamsi', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm wrist spin' },
+    // 4 Substitutes
+    { id: 'sa-12', name: 'Ryan Rickelton', shortName: 'R. Rickelton', role: 'batter', battingStyle: 'Left-hand bat', isSubstitute: true },
+    { id: 'sa-13', name: 'Ottneil Baartman', shortName: 'O. Baartman', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast', isSubstitute: true },
+    { id: 'sa-14', name: 'Bjorn Fortuin', shortName: 'B. Fortuin', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+    { id: 'sa-15', name: 'Lungi Ngidi', shortName: 'L. Ngidi', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+  ],
+};
+
+export const pakistanTeam: Team = {
+  id: 'team-pak',
+  name: 'Pakistan',
+  shortName: 'PAK',
+  color: '#047857',
+  players: [
+    { id: 'pak-1', name: 'Babar Azam', shortName: 'B. Azam', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'pak-2', name: 'Mohammad Rizwan', shortName: 'M. Rizwan', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'pak-3', name: 'Fakhar Zaman', shortName: 'F. Zaman', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'pak-4', name: 'Usman Khan', shortName: 'U. Khan', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'pak-5', name: 'Iftikhar Ahmed', shortName: 'I. Ahmed', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'pak-6', name: 'Imad Wasim', shortName: 'I. Wasim', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'pak-7', name: 'Shadab Khan', shortName: 'S. Khan', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'pak-8', name: 'Shaheen Afridi', shortName: 'S. Afridi', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast' },
+    { id: 'pak-9', name: 'Naseem Shah', shortName: 'N. Shah', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'pak-10', name: 'Haris Rauf', shortName: 'H. Rauf', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'pak-11', name: 'Mohammad Amir', shortName: 'M. Amir', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast' },
+    // 4 Substitutes
+    { id: 'pak-12', name: 'Saim Ayub', shortName: 'S. Ayub', role: 'batter', battingStyle: 'Left-hand bat', isSubstitute: true },
+    { id: 'pak-13', name: 'Azam Khan', shortName: 'A. Khan', role: 'wicketkeeper', battingStyle: 'Right-hand bat', isSubstitute: true },
+    { id: 'pak-14', name: 'Abbas Afridi', shortName: 'A. Afridi', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast', isSubstitute: true },
+    { id: 'pak-15', name: 'Abrar Ahmed', shortName: 'A. Ahmed', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak', isSubstitute: true },
+  ],
+};
+
+export const newZealandTeam: Team = {
+  id: 'team-nz',
+  name: 'New Zealand',
+  shortName: 'NZ',
+  color: '#0f172a',
+  players: [
+    { id: 'nz-1', name: 'Finn Allen', shortName: 'F. Allen', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'nz-2', name: 'Devon Conway', shortName: 'D. Conway', role: 'wicketkeeper', battingStyle: 'Left-hand bat' },
+    { id: 'nz-3', name: 'Kane Williamson', shortName: 'K. Williamson', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'nz-4', name: 'Daryl Mitchell', shortName: 'D. Mitchell', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'nz-5', name: 'Glenn Phillips', shortName: 'G. Phillips', role: 'batter', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'nz-6', name: 'Mark Chapman', shortName: 'M. Chapman', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'nz-7', name: 'Mitchell Santner', shortName: 'M. Santner', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'nz-8', name: 'Matt Henry', shortName: 'M. Henry', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    { id: 'nz-9', name: 'Trent Boult', shortName: 'T. Boult', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm fast-medium' },
+    { id: 'nz-10', name: 'Lockie Ferguson', shortName: 'L. Ferguson', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'nz-11', name: 'Ish Sodhi', shortName: 'I. Sodhi', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    // 4 Substitutes
+    { id: 'nz-12', name: 'Rachin Ravindra', shortName: 'R. Ravindra', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+    { id: 'nz-13', name: 'Michael Bracewell', shortName: 'M. Bracewell', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+    { id: 'nz-14', name: 'Tim Southee', shortName: 'T. Southee', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast', isSubstitute: true },
+    { id: 'nz-15', name: 'Ben Sears', shortName: 'B. Sears', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+  ],
+};
+
+export const sriLankaTeam: Team = {
+  id: 'team-sl',
+  name: 'Sri Lanka',
+  shortName: 'SL',
+  color: '#1e3a8a',
+  players: [
+    { id: 'sl-1', name: 'Pathum Nissanka', shortName: 'P. Nissanka', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'sl-2', name: 'Kusal Mendis', shortName: 'K. Mendis', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'sl-3', name: 'Kamindu Mendis', shortName: 'K. Mendis', role: 'batter', battingStyle: 'Left-hand bat', bowlingStyle: 'Ambidextrous' },
+    { id: 'sl-4', name: 'Charith Asalanka', shortName: 'C. Asalanka', role: 'batter', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'sl-5', name: 'Dhananjaya de Silva', shortName: 'D. de Silva', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'sl-6', name: 'Dasun Shanaka', shortName: 'D. Shanaka', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'sl-7', name: 'Wanindu Hasaranga', shortName: 'W. Hasaranga', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'sl-8', name: 'Dunith Wellalage', shortName: 'D. Wellalage', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'sl-9', name: 'Maheesh Theekshana', shortName: 'M. Theekshana', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'sl-10', name: 'Matheesha Pathirana', shortName: 'M. Pathirana', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'sl-11', name: 'Dilshan Madushanka', shortName: 'D. Madushanka', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm fast' },
+    // 4 Substitutes
+    { id: 'sl-12', name: 'Kusal Perera', shortName: 'K. Perera', role: 'wicketkeeper', battingStyle: 'Left-hand bat', isSubstitute: true },
+    { id: 'sl-13', name: 'Nuwan Thushara', shortName: 'N. Thushara', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium', isSubstitute: true },
+    { id: 'sl-14', name: 'Sadeera Samarawickrama', shortName: 'S. Samarawickrama', role: 'batter', battingStyle: 'Right-hand bat', isSubstitute: true },
+    { id: 'sl-15', name: 'Dushmantha Chameera', shortName: 'D. Chameera', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+  ],
+};
+
+export const westIndiesTeam: Team = {
+  id: 'team-wi',
+  name: 'West Indies',
+  shortName: 'WI',
+  color: '#7f1d1d',
+  players: [
+    { id: 'wi-1', name: 'Brandon King', shortName: 'B. King', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'wi-2', name: 'Johnson Charles', shortName: 'J. Charles', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'wi-3', name: 'Nicholas Pooran', shortName: 'N. Pooran', role: 'wicketkeeper', battingStyle: 'Left-hand bat' },
+    { id: 'wi-4', name: 'Shai Hope', shortName: 'S. Hope', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'wi-5', name: 'Rovman Powell', shortName: 'R. Powell', role: 'batter', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'wi-6', name: 'Andre Russell', shortName: 'A. Russell', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'wi-7', name: 'Sherfane Rutherford', shortName: 'S. Rutherford', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'wi-8', name: 'Romario Shepherd', shortName: 'R. Shepherd', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    { id: 'wi-9', name: 'Akeal Hosein', shortName: 'A. Hosein', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'wi-10', name: 'Alzarri Joseph', shortName: 'A. Joseph', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'wi-11', name: 'Gudakesh Motie', shortName: 'G. Motie', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    // 4 Substitutes
+    { id: 'wi-12', name: 'Shimron Hetmyer', shortName: 'S. Hetmyer', role: 'batter', battingStyle: 'Left-hand bat', isSubstitute: true },
+    { id: 'wi-13', name: 'Obed McCoy', shortName: 'O. McCoy', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast-medium', isSubstitute: true },
+    { id: 'wi-14', name: 'Roston Chase', shortName: 'R. Chase', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+    { id: 'wi-15', name: 'Shamar Joseph', shortName: 'S. Joseph', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm fast', isSubstitute: true },
+  ],
+};
+
+export const bangladeshTeam: Team = {
+  id: 'team-ban',
+  name: 'Bangladesh',
+  shortName: 'BAN',
+  color: '#065f46',
+  players: [
+    { id: 'ban-1', name: 'Tanzid Hasan', shortName: 'T. Hasan', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'ban-2', name: 'Litton Das', shortName: 'L. Das', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'ban-3', name: 'Najmul Hossain Shanto', shortName: 'N. Shanto', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'ban-4', name: 'Towhid Hridoy', shortName: 'T. Hridoy', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'ban-5', name: 'Shakib Al Hasan', shortName: 'S. Al Hasan', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'ban-6', name: 'Mahmudullah', shortName: 'Mahmudullah', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'ban-7', name: 'Jaker Ali', shortName: 'J. Ali', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'ban-8', name: 'Rishad Hossain', shortName: 'R. Hossain', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'ban-9', name: 'Taskin Ahmed', shortName: 'T. Ahmed', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm fast' },
+    { id: 'ban-10', name: 'Mustafizur Rahman', shortName: 'M. Rahman', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast-medium' },
+    { id: 'ban-11', name: 'Tanzim Hasan Sakib', shortName: 'T. Sakib', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    // 4 Substitutes
+    { id: 'ban-12', name: 'Shoriful Islam', shortName: 'S. Islam', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm medium-fast', isSubstitute: true },
+    { id: 'ban-13', name: 'Soumya Sarkar', shortName: 'S. Sarkar', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm medium', isSubstitute: true },
+    { id: 'ban-14', name: 'Mahedi Hasan', shortName: 'M. Hasan', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+    { id: 'ban-15', name: 'Tanvir Islam', shortName: 'T. Islam', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+  ],
+};
+
+export const afghanistanTeam: Team = {
+  id: 'team-afg',
+  name: 'Afghanistan',
+  shortName: 'AFG',
+  color: '#2563eb',
+  players: [
+    { id: 'afg-1', name: 'Rahmanullah Gurbaz', shortName: 'R. Gurbaz', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'afg-2', name: 'Ibrahim Zadran', shortName: 'I. Zadran', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'afg-3', name: 'Gulbadin Naib', shortName: 'G. Naib', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast' },
+    { id: 'afg-4', name: 'Azmatullah Omarzai', shortName: 'A. Omarzai', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast' },
+    { id: 'afg-5', name: 'Mohammad Nabi', shortName: 'M. Nabi', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'afg-6', name: 'Najibullah Zadran', shortName: 'N. Zadran', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'afg-7', name: 'Karim Janat', shortName: 'K. Janat', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+    { id: 'afg-8', name: 'Rashid Khan', shortName: 'R. Khan', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'afg-9', name: 'Noor Ahmad', shortName: 'N. Ahmad', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm wrist spin' },
+    { id: 'afg-10', name: 'Naveen-ul-Haq', shortName: 'Naveen', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast' },
+    { id: 'afg-11', name: 'Fazalhaq Farooqi', shortName: 'F. Farooqi', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Left-arm fast-medium' },
+    // 4 Substitutes
+    { id: 'afg-12', name: 'Fareed Ahmad', shortName: 'F. Ahmad', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast-medium', isSubstitute: true },
+    { id: 'afg-13', name: 'Mohammad Ishaq', shortName: 'M. Ishaq', role: 'wicketkeeper', battingStyle: 'Right-hand bat', isSubstitute: true },
+    { id: 'afg-14', name: 'Nangeyalia Kharote', shortName: 'N. Kharote', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox', isSubstitute: true },
+    { id: 'afg-15', name: 'Mujeeb Ur Rahman', shortName: 'Mujeeb', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+  ],
+};
+
+export const zimbabweTeam: Team = {
+  id: 'team-zim',
+  name: 'Zimbabwe',
+  shortName: 'ZIM',
+  color: '#dc2626',
+  players: [
+    { id: 'zim-1', name: 'Brian Bennett', shortName: 'B. Bennett', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'zim-2', name: 'Tadiwanashe Marumani', shortName: 'T. Marumani', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'zim-3', name: 'Sikandar Raza', shortName: 'S. Raza', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+    { id: 'zim-4', name: 'Dion Myers', shortName: 'D. Myers', role: 'batter', battingStyle: 'Right-hand bat' },
+    { id: 'zim-5', name: 'Johnathan Campbell', shortName: 'J. Campbell', role: 'batter', battingStyle: 'Left-hand bat' },
+    { id: 'zim-6', name: 'Clive Madande', shortName: 'C. Madande', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+    { id: 'zim-7', name: 'Ryan Burl', shortName: 'R. Burl', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm legbreak' },
+    { id: 'zim-8', name: 'Wellington Masakadza', shortName: 'W. Masakadza', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Slow left-arm orthodox' },
+    { id: 'zim-9', name: 'Richard Ngarava', shortName: 'R. Ngarava', role: 'bowler', battingStyle: 'Left-hand bat', bowlingStyle: 'Left-arm fast-medium' },
+    { id: 'zim-10', name: 'Blessing Muzarabani', shortName: 'B. Muzarabani', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    { id: 'zim-11', name: 'Tendai Chatara', shortName: 'T. Chatara', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+    // 4 Substitutes
+    { id: 'zim-12', name: 'Faraz Akram', shortName: 'F. Akram', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm medium', isSubstitute: true },
+    { id: 'zim-13', name: 'Brandon Mavuta', shortName: 'B. Mavuta', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm legbreak', isSubstitute: true },
+    { id: 'zim-14', name: 'Wessly Madhevere', shortName: 'W. Madhevere', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak', isSubstitute: true },
+    { id: 'zim-15', name: 'Trevor Gwandu', shortName: 'T. Gwandu', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium-fast', isSubstitute: true },
+  ],
+};
+
+export const allPresetTeams: Team[] = [
+  indiaTeam,
+  australiaTeam,
+  englandTeam,
+  pakistanTeam,
+  southAfricaTeam,
+  newZealandTeam,
+  sriLankaTeam,
+  westIndiesTeam,
+  bangladeshTeam,
+  afghanistanTeam,
+  zimbabweTeam,
+];
+
+// --- 1. DEFAULT MATCH: ENGLAND VS AUSTRALIA (LORD'S T20I) ---
+export function createDefaultMatch(): Match {
+  const ausInnings1: Innings = {
+    inningsNumber: 1,
+    battingTeamId: 'team-aus',
+    battingTeamName: 'Australia',
+    bowlingTeamId: 'team-eng',
+    bowlingTeamName: 'England',
+    runs: 177,
+    wickets: 7,
+    legalBalls: 120,
+    oversFormatted: '20.0',
+    extras: { wides: 5, noBalls: 1, byes: 2, legByes: 4, penaltyRuns: 0, total: 12 },
+    strikerId: 'aus-8',
+    nonStrikerId: 'aus-9',
+    currentBowlerId: 'eng-9',
+    battingCard: [
+      { playerId: 'aus-1', playerName: 'David Warner', runs: 34, ballsFaced: 22, fours: 4, sixes: 1, dots: 8, strikeRate: 154.5, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'aus-1', dismissedBatterName: 'David Warner', bowlerId: 'eng-10', bowlerName: 'Reece Topley', fielderName: 'Jos Buttler', creditedToBowler: true, text: 'c Buttler b Topley', over: '4.5', teamScoreAtDismissal: 42, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'aus-2', playerName: 'Travis Head', runs: 16, ballsFaced: 11, fours: 2, sixes: 0, dots: 5, strikeRate: 145.5, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'aus-2', dismissedBatterName: 'Travis Head', bowlerId: 'eng-9', bowlerName: 'Jofra Archer', creditedToBowler: true, text: 'b Archer', over: '3.1', teamScoreAtDismissal: 28, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'aus-3', playerName: 'Mitchell Marsh', runs: 68, ballsFaced: 42, fours: 6, sixes: 3, dots: 12, strikeRate: 161.9, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'aus-3', dismissedBatterName: 'Mitchell Marsh', bowlerId: 'eng-8', bowlerName: 'Adil Rashid', fielderName: 'Harry Brook', creditedToBowler: true, text: 'c Brook b Rashid', over: '15.2', teamScoreAtDismissal: 135, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'aus-4', playerName: 'Glenn Maxwell', runs: 22, ballsFaced: 14, fours: 2, sixes: 1, dots: 4, strikeRate: 157.1, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'aus-4', dismissedBatterName: 'Glenn Maxwell', bowlerId: 'eng-6', bowlerName: 'Sam Curran', fielderName: 'Will Jacks', creditedToBowler: true, text: 'c Jacks b Curran', over: '16.4', teamScoreAtDismissal: 148, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'aus-5', playerName: 'Marcus Stoinis', runs: 18, ballsFaced: 13, fours: 1, sixes: 1, dots: 5, strikeRate: 138.5, isOut: true, dismissal: { type: 'run_out', dismissedBatterId: 'aus-5', dismissedBatterName: 'Marcus Stoinis', bowlerId: 'eng-7', fielderName: 'Sam Curran', creditedToBowler: false, text: 'run out (Curran)', over: '18.1', teamScoreAtDismissal: 162, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'aus-6', playerName: 'Tim David', runs: 11, ballsFaced: 9, fours: 1, sixes: 0, dots: 3, strikeRate: 122.2, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'aus-6', dismissedBatterName: 'Tim David', bowlerId: 'eng-7', bowlerName: 'Chris Jordan', creditedToBowler: true, text: 'b Jordan', over: '19.2', teamScoreAtDismissal: 172, wicketNumber: 6 }, isBatting: false },
+      { playerId: 'aus-7', playerName: 'Matthew Wade', runs: 4, ballsFaced: 4, fours: 0, sixes: 0, dots: 2, strikeRate: 100.0, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'aus-7', dismissedBatterName: 'Matthew Wade', bowlerId: 'eng-9', bowlerName: 'Jofra Archer', fielderName: 'Jos Buttler', creditedToBowler: true, text: 'c Buttler b Archer', over: '19.5', teamScoreAtDismissal: 176, wicketNumber: 7 }, isBatting: false },
+      { playerId: 'aus-8', playerName: 'Pat Cummins', runs: 2, ballsFaced: 3, fours: 0, sixes: 0, dots: 1, strikeRate: 66.7, isOut: false, isBatting: true },
+      { playerId: 'aus-9', playerName: 'Mitchell Starc', runs: 2, ballsFaced: 2, fours: 0, sixes: 0, dots: 0, strikeRate: 100.0, isOut: false, isBatting: true },
+    ],
+    bowlingCard: [
+      { playerId: 'eng-9', playerName: 'J. Archer', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 32, wickets: 2, economy: 8.0, wides: 1, noBalls: 0, dots: 10 },
+      { playerId: 'eng-10', playerName: 'R. Topley', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 35, wickets: 1, economy: 8.75, wides: 2, noBalls: 0, dots: 9 },
+      { playerId: 'eng-6', playerName: 'S. Curran', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 34, wickets: 1, economy: 8.5, wides: 1, noBalls: 1, dots: 8 },
+      { playerId: 'eng-8', playerName: 'A. Rashid', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 36, wickets: 1, economy: 9.0, wides: 1, noBalls: 0, dots: 7 },
+      { playerId: 'eng-7', playerName: 'C. Jordan', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 36, wickets: 1, economy: 9.0, wides: 0, noBalls: 0, dots: 8 },
+    ],
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 28, overs: '3.1', batterId: 'aus-2', batterName: 'Travis Head', score: 16, balls: 11 },
+      { wicketNumber: 2, teamRuns: 42, overs: '4.5', batterId: 'aus-1', batterName: 'David Warner', score: 34, balls: 22 },
+      { wicketNumber: 3, teamRuns: 135, overs: '15.2', batterId: 'aus-3', batterName: 'Mitchell Marsh', score: 68, balls: 42 },
+      { wicketNumber: 4, teamRuns: 148, overs: '16.4', batterId: 'aus-4', batterName: 'Glenn Maxwell', score: 22, balls: 14 },
+      { wicketNumber: 5, teamRuns: 162, overs: '18.1', batterId: 'aus-5', batterName: 'Marcus Stoinis', score: 18, balls: 13 },
+      { wicketNumber: 6, teamRuns: 172, overs: '19.2', batterId: 'aus-6', batterName: 'Tim David', score: 11, balls: 9 },
+      { wicketNumber: 7, teamRuns: 176, overs: '19.5', batterId: 'aus-7', batterName: 'Matthew Wade', score: 4, balls: 4 },
+    ],
+    partnerships: [
+      { wicketNumber: 1, batter1Id: 'aus-1', batter1Name: 'David Warner', batter1Runs: 12, batter1Balls: 8, batter2Id: 'aus-2', batter2Name: 'Travis Head', batter2Runs: 16, batter2Balls: 11, totalRuns: 28, totalBalls: 19, isCurrent: false },
+      { wicketNumber: 2, batter1Id: 'aus-1', batter1Name: 'David Warner', batter1Runs: 10, batter1Balls: 6, batter2Id: 'aus-3', batter2Name: 'Mitchell Marsh', batter2Runs: 4, batter2Balls: 4, totalRuns: 14, totalBalls: 10, isCurrent: false },
+      { wicketNumber: 3, batter1Id: 'aus-3', batter1Name: 'Mitchell Marsh', batter1Runs: 64, batter1Balls: 38, batter2Id: 'aus-4', batter2Name: 'Glenn Maxwell', batter2Runs: 22, batter2Balls: 14, totalRuns: 93, totalBalls: 52, isCurrent: false },
+      { wicketNumber: 4, batter1Id: 'aus-3', batter1Name: 'Mitchell Marsh', batter1Runs: 0, batter1Balls: 1, batter2Id: 'aus-5', batter2Name: 'Marcus Stoinis', batter2Runs: 11, batter2Balls: 7, totalRuns: 13, totalBalls: 8, isCurrent: false },
+      { wicketNumber: 5, batter1Id: 'aus-5', batter1Name: 'Marcus Stoinis', batter1Runs: 7, batter1Balls: 6, batter2Id: 'aus-6', batter2Name: 'Tim David', batter2Runs: 7, batter2Balls: 5, totalRuns: 14, totalBalls: 11, isCurrent: false },
+      { wicketNumber: 6, batter1Id: 'aus-6', batter1Name: 'Tim David', batter1Runs: 4, batter1Balls: 4, batter2Id: 'aus-7', batter2Name: 'Matthew Wade', batter2Runs: 4, batter2Balls: 3, totalRuns: 10, totalBalls: 7, isCurrent: false },
+      { wicketNumber: 7, batter1Id: 'aus-7', batter1Name: 'Matthew Wade', batter1Runs: 0, batter1Balls: 1, batter2Id: 'aus-8', batter2Name: 'Pat Cummins', batter2Runs: 2, batter2Balls: 2, totalRuns: 4, totalBalls: 3, isCurrent: false },
+      { wicketNumber: 8, batter1Id: 'aus-8', batter1Name: 'Pat Cummins', batter1Runs: 0, batter1Balls: 1, batter2Id: 'aus-9', batter2Name: 'Mitchell Starc', batter2Runs: 1, batter2Balls: 1, totalRuns: 1, totalBalls: 2, isCurrent: false },
+    ],
+    wagonShots: [],
+    isCompleted: true,
+    completedReason: '20 Overs Completed',
+  };
+
+  const engInnings2: Innings = {
+    inningsNumber: 2,
+    battingTeamId: 'team-eng',
+    battingTeamName: 'England',
+    bowlingTeamId: 'team-aus',
+    bowlingTeamName: 'Australia',
+    runs: 156,
+    wickets: 4,
+    legalBalls: 105,
+    oversFormatted: '17.3',
+    extras: { wides: 4, noBalls: 1, byes: 2, legByes: 3, penaltyRuns: 0, total: 10 },
+    strikerId: 'eng-5',
+    nonStrikerId: 'eng-6',
+    currentBowlerId: 'aus-9',
+    nextBowlerId: 'aus-11',
+    lastBowlerId: 'aus-8',
+    battingCard: [
+      { playerId: 'eng-1', playerName: 'Jos Buttler', runs: 18, ballsFaced: 12, fours: 2, sixes: 1, dots: 4, strikeRate: 150.0, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'eng-1', dismissedBatterName: 'Jos Buttler', bowlerId: 'aus-11', bowlerName: 'Josh Hazlewood', fielderName: 'Matthew Wade', creditedToBowler: true, text: 'c Wade b Hazlewood', over: '2.4', teamScoreAtDismissal: 24, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'eng-2', playerName: 'Phil Salt', runs: 38, ballsFaced: 21, fours: 4, sixes: 2, dots: 6, strikeRate: 181.0, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'eng-2', dismissedBatterName: 'Phil Salt', bowlerId: 'aus-10', bowlerName: 'Adam Zampa', creditedToBowler: true, text: 'b Zampa', over: '7.2', teamScoreAtDismissal: 68, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'eng-3', playerName: 'Will Jacks', runs: 16, ballsFaced: 14, fours: 1, sixes: 0, dots: 5, strikeRate: 114.3, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'eng-3', dismissedBatterName: 'Will Jacks', bowlerId: 'aus-8', bowlerName: 'Pat Cummins', fielderName: 'David Warner', creditedToBowler: true, text: 'c Warner b Cummins', over: '11.1', teamScoreAtDismissal: 95, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'eng-4', playerName: 'Harry Brook', runs: 28, ballsFaced: 19, fours: 3, sixes: 1, dots: 6, strikeRate: 147.4, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'eng-4', dismissedBatterName: 'Harry Brook', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', fielderName: 'Glenn Maxwell', creditedToBowler: true, text: 'c Maxwell b Starc', over: '14.5', teamScoreAtDismissal: 122, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'eng-5', playerName: 'Liam Livingstone', runs: 42, ballsFaced: 24, fours: 3, sixes: 2, dots: 7, strikeRate: 175.0, isOut: false, isBatting: true },
+      { playerId: 'eng-6', playerName: 'Sam Curran', runs: 14, ballsFaced: 9, fours: 1, sixes: 0, dots: 3, strikeRate: 155.6, isOut: false, isBatting: true },
+      { playerId: 'eng-7', playerName: 'Chris Jordan', runs: 0, ballsFaced: 0, fours: 0, sixes: 0, dots: 0, strikeRate: 0, isOut: false, isBatting: false },
+      { playerId: 'eng-8', playerName: 'Adil Rashid', runs: 0, ballsFaced: 0, fours: 0, sixes: 0, dots: 0, strikeRate: 0, isOut: false, isBatting: false },
+      { playerId: 'eng-9', playerName: 'Jofra Archer', runs: 0, ballsFaced: 0, fours: 0, sixes: 0, dots: 0, strikeRate: 0, isOut: false, isBatting: false },
+      { playerId: 'eng-10', playerName: 'Reece Topley', runs: 0, ballsFaced: 0, fours: 0, sixes: 0, dots: 0, strikeRate: 0, isOut: false, isBatting: false },
+      { playerId: 'eng-11', playerName: 'Mark Wood', runs: 0, ballsFaced: 0, fours: 0, sixes: 0, dots: 0, strikeRate: 0, isOut: false, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'aus-9', playerName: 'M. Starc', legalBalls: 21, overs: '3.3', maidens: 0, runsConceded: 31, wickets: 2, economy: 8.86, wides: 1, noBalls: 0, dots: 8 },
+      { playerId: 'aus-11', playerName: 'J. Hazlewood', legalBalls: 18, overs: '3.0', maidens: 0, runsConceded: 21, wickets: 0, economy: 7.0, wides: 0, noBalls: 0, dots: 8 },
+      { playerId: 'aus-8', playerName: 'P. Cummins', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 34, wickets: 1, economy: 8.5, wides: 1, noBalls: 1, dots: 9 },
+      { playerId: 'aus-10', playerName: 'A. Zampa', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 38, wickets: 1, economy: 9.5, wides: 1, noBalls: 0, dots: 7 },
+      { playerId: 'aus-5', playerName: 'C. Green', legalBalls: 6, overs: '1.0', maidens: 0, runsConceded: 12, wickets: 0, economy: 12.0, wides: 0, noBalls: 0, dots: 1 },
+      { playerId: 'aus-4', playerName: 'G. Maxwell', legalBalls: 6, overs: '1.0', maidens: 0, runsConceded: 11, wickets: 0, economy: 11.0, wides: 1, noBalls: 0, dots: 1 },
+    ],
+    deliveries: [
+      { id: 'del-18-1', deliveryIndex: 101, overNumber: 17, ballInOver: 1, displayOver: '17.1', strikerId: 'eng-6', strikerName: 'Sam Curran', nonStrikerId: 'eng-5', nonStrikerName: 'Liam Livingstone', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', deliveryType: 'normal', batterRuns: 1, extraRuns: 0, totalRuns: 1, isLegalBall: true, isFour: false, isSix: false, isDot: false, commentary: 'Starc to Curran, 1 run pushed into the offside, rotating strike to Livingstone.', timestamp: Date.now() - 60000 },
+      { id: 'del-18-2', deliveryIndex: 102, overNumber: 17, ballInOver: 2, displayOver: '17.2', strikerId: 'eng-5', strikerName: 'Liam Livingstone', nonStrikerId: 'eng-6', nonStrikerName: 'Sam Curran', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', deliveryType: 'normal', batterRuns: 4, extraRuns: 0, totalRuns: 4, isLegalBall: true, isFour: true, isSix: false, isDot: false, commentary: 'FOUR! Livingstone clears his front leg and slaps through extra cover with pure power!', timestamp: Date.now() - 45000 },
+      { id: 'del-18-3', deliveryIndex: 103, overNumber: 17, ballInOver: 3, displayOver: '17.3', strikerId: 'eng-5', strikerName: 'Liam Livingstone', nonStrikerId: 'eng-6', nonStrikerName: 'Sam Curran', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', deliveryType: 'normal', batterRuns: 0, extraRuns: 0, totalRuns: 0, isLegalBall: true, isFour: false, isSix: false, isDot: true, commentary: 'Starc spears a 144kph yorker on middle stump; Livingstone jams it out to midwicket. Dot ball.', timestamp: Date.now() - 30000 },
+      { id: 'del-18-4', deliveryIndex: 104, overNumber: 17, ballInOver: 0, displayOver: 'Wd', strikerId: 'eng-5', strikerName: 'Liam Livingstone', nonStrikerId: 'eng-6', nonStrikerName: 'Sam Curran', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', deliveryType: 'wide', batterRuns: 0, extraRuns: 2, totalRuns: 2, isLegalBall: false, isFour: false, isSix: false, isDot: false, commentary: 'Wide ball! Down leg side from Starc, keeper fumbles allowing a quick extra single (Wd+1).', timestamp: Date.now() - 15000 },
+      { id: 'del-18-5', deliveryIndex: 105, overNumber: 17, ballInOver: 4, displayOver: '17.4', strikerId: 'eng-5', strikerName: 'Liam Livingstone', nonStrikerId: 'eng-6', nonStrikerName: 'Sam Curran', bowlerId: 'aus-9', bowlerName: 'Mitchell Starc', deliveryType: 'normal', batterRuns: 2, extraRuns: 0, totalRuns: 2, isLegalBall: true, isFour: false, isSix: false, isDot: false, commentary: 'Livingstone clips off pads towards deep midwicket, sharp running and they come back for two.', timestamp: Date.now() - 5000 },
+    ],
+    overs: [
+      {
+        overNumber: 14,
+        displayOverNumber: 15,
+        bowlerId: 'aus-9',
+        bowlerName: 'M. Starc',
+        runsConceded: 8,
+        wickets: 1,
+        isMaiden: false,
+        isCompleted: true,
+        deliveries: [],
+      },
+      {
+        overNumber: 15,
+        displayOverNumber: 16,
+        bowlerId: 'aus-11',
+        bowlerName: 'J. Hazlewood',
+        runsConceded: 7,
+        wickets: 0,
+        isMaiden: false,
+        isCompleted: true,
+        deliveries: [],
+      },
+      {
+        overNumber: 16,
+        displayOverNumber: 17,
+        bowlerId: 'aus-8',
+        bowlerName: 'P. Cummins',
+        runsConceded: 11,
+        wickets: 0,
+        isMaiden: false,
+        isCompleted: true,
+        deliveries: [],
+      },
+    ],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 24, overs: '2.4', batterId: 'eng-1', batterName: 'Jos Buttler', score: 18, balls: 12 },
+      { wicketNumber: 2, teamRuns: 68, overs: '7.2', batterId: 'eng-2', batterName: 'Phil Salt', score: 38, balls: 21 },
+      { wicketNumber: 3, teamRuns: 95, overs: '11.1', batterId: 'eng-3', batterName: 'Will Jacks', score: 16, balls: 14 },
+      { wicketNumber: 4, teamRuns: 122, overs: '14.5', batterId: 'eng-4', batterName: 'Harry Brook', score: 28, balls: 19 },
+    ],
+    partnerships: [
+      { wicketNumber: 1, batter1Id: 'eng-1', batter1Name: 'Jos Buttler', batter1Runs: 18, batter1Balls: 12, batter2Id: 'eng-2', batter2Name: 'Phil Salt', batter2Runs: 6, batter2Balls: 4, totalRuns: 24, totalBalls: 16, isCurrent: false },
+      { wicketNumber: 2, batter1Id: 'eng-2', batter1Name: 'Phil Salt', batter1Runs: 32, batter1Balls: 17, batter2Id: 'eng-3', batter2Name: 'Will Jacks', batter2Runs: 10, batter2Balls: 8, totalRuns: 44, totalBalls: 25, isCurrent: false },
+      { wicketNumber: 3, batter1Id: 'eng-3', batter1Name: 'Will Jacks', batter1Runs: 6, batter1Balls: 6, batter2Id: 'eng-4', batter2Name: 'Harry Brook', batter2Runs: 19, batter2Balls: 13, totalRuns: 27, totalBalls: 19, isCurrent: false },
+      { wicketNumber: 4, batter1Id: 'eng-4', batter1Name: 'Harry Brook', batter1Runs: 9, batter1Balls: 6, batter2Id: 'eng-5', batter2Name: 'Liam Livingstone', batter2Runs: 18, batter2Balls: 15, totalRuns: 27, totalBalls: 21, isCurrent: false },
+      { wicketNumber: 5, batter1Id: 'eng-5', batter1Name: 'Liam Livingstone', batter1Runs: 20, batter1Balls: 9, batter2Id: 'eng-6', batter2Name: 'Sam Curran', batter2Runs: 14, batter2Balls: 9, totalRuns: 34, totalBalls: 18, isCurrent: true },
+    ],
+    wagonShots: [
+      { id: 'ws-1', angle: 45, distance: 92, runs: 6, isFour: false, isSix: true, batterName: 'Liam Livingstone', over: '13.2', description: 'Six over long on' },
+      { id: 'ws-2', angle: 310, distance: 84, runs: 4, isFour: true, isSix: false, batterName: 'Liam Livingstone', over: '14.1', description: 'Four cover drive' },
+      { id: 'ws-3', angle: 120, distance: 88, runs: 4, isFour: true, isSix: false, batterName: 'Liam Livingstone', over: '16.3', description: 'Four pull midwicket' },
+      { id: 'ws-4', angle: 215, distance: 40, runs: 1, isFour: false, isSix: false, batterName: 'Liam Livingstone', over: '16.4', description: 'Single fine leg' },
+      { id: 'ws-5', angle: 0, distance: 98, runs: 6, isFour: false, isSix: true, batterName: 'Liam Livingstone', over: '17.2', description: 'Six straight' },
+    ],
+    isCompleted: false,
+  };
+
+  return {
+    id: 'match-eng-aus-2024',
+    title: 'ENG vs AUS',
+    subtitle: "2nd T20I • Lord's London",
+    seriesName: "Men's T20 Tri-Series",
+    venue: "Lord's, London",
+    format: 'T20',
+    totalOvers: 20,
+    ballsPerOver: 6,
+    team1: englandTeam,
+    team2: australiaTeam,
+    tossWinnerId: 'team-aus',
+    tossDecision: 'bat',
+    currentInningsIndex: 1,
+    innings: [ausInnings1, engInnings2],
+    target: 178,
+    dlsPar: 142,
+    powerplayDetails: 'POWERPLAY 3 (16-20)',
+    status: 'live',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+// --- 2. MATCH: INDIA VS SOUTH AFRICA (ODI BILATERAL CUP, EDEN GARDENS) ---
+export function createIndSaMatch(): Match {
+  const indInnings1: Innings = {
+    inningsNumber: 1,
+    battingTeamId: 'team-ind',
+    battingTeamName: 'India',
+    bowlingTeamId: 'team-sa',
+    bowlingTeamName: 'South Africa',
+    runs: 326,
+    wickets: 5,
+    legalBalls: 300,
+    oversFormatted: '50.0',
+    extras: { wides: 10, noBalls: 2, byes: 4, legByes: 6, penaltyRuns: 0, total: 22 },
+    strikerId: 'ind-7',
+    nonStrikerId: 'ind-6',
+    currentBowlerId: 'sa-9',
+    battingCard: [
+      { playerId: 'ind-1', playerName: 'Rohit Sharma', runs: 40, ballsFaced: 24, fours: 6, sixes: 2, dots: 8, strikeRate: 166.7, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'ind-1', dismissedBatterName: 'Rohit Sharma', bowlerId: 'sa-9', bowlerName: 'K. Rabada', fielderName: 'T. Bavuma', creditedToBowler: true, text: 'c Bavuma b Rabada', over: '5.5', teamScoreAtDismissal: 62, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'ind-2', playerName: 'Shubman Gill', runs: 23, ballsFaced: 24, fours: 4, sixes: 1, dots: 10, strikeRate: 95.8, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'ind-2', dismissedBatterName: 'Shubman Gill', bowlerId: 'sa-8', bowlerName: 'K. Maharaj', creditedToBowler: true, text: 'b Maharaj', over: '10.3', teamScoreAtDismissal: 93, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'ind-3', playerName: 'Virat Kohli', runs: 101, ballsFaced: 121, fours: 10, sixes: 0, dots: 45, strikeRate: 83.5, isOut: false, isBatting: false },
+      { playerId: 'ind-4', playerName: 'Shreyas Iyer', runs: 77, ballsFaced: 87, fours: 7, sixes: 2, dots: 32, strikeRate: 88.5, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'ind-4', dismissedBatterName: 'Shreyas Iyer', bowlerId: 'sa-10', bowlerName: 'L. Ngidi', fielderName: 'A. Markram', creditedToBowler: true, text: 'c Markram b Ngidi', over: '36.5', teamScoreAtDismissal: 227, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'ind-5', playerName: 'KL Rahul', runs: 8, ballsFaced: 17, fours: 0, sixes: 0, dots: 9, strikeRate: 47.1, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'ind-5', dismissedBatterName: 'KL Rahul', bowlerId: 'sa-7', bowlerName: 'M. Jansen', fielderName: 'H. van der Dussen', creditedToBowler: true, text: 'c van der Dussen b Jansen', over: '42.1', teamScoreAtDismissal: 249, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'ind-6', playerName: 'Suryakumar Yadav', runs: 22, ballsFaced: 14, fours: 5, sixes: 0, dots: 4, strikeRate: 157.1, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'ind-6', dismissedBatterName: 'Suryakumar Yadav', bowlerId: 'sa-11', bowlerName: 'T. Shamsi', fielderName: 'Q. de Kock', creditedToBowler: true, text: 'c de Kock b Shamsi', over: '46.0', teamScoreAtDismissal: 285, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'ind-7', playerName: 'Ravindra Jadeja', runs: 29, ballsFaced: 15, fours: 3, sixes: 1, dots: 3, strikeRate: 193.3, isOut: false, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'sa-10', playerName: 'L. Ngidi', legalBalls: 48, overs: '8.0', maidens: 1, runsConceded: 63, wickets: 1, economy: 7.88, wides: 2, noBalls: 0, dots: 18 },
+      { playerId: 'sa-7', playerName: 'M. Jansen', legalBalls: 56, overs: '9.2', maidens: 0, runsConceded: 94, wickets: 1, economy: 10.07, wides: 4, noBalls: 1, dots: 15 },
+      { playerId: 'sa-9', playerName: 'K. Rabada', legalBalls: 60, overs: '10.0', maidens: 1, runsConceded: 48, wickets: 1, economy: 4.80, wides: 1, noBalls: 0, dots: 28 },
+      { playerId: 'sa-8', playerName: 'K. Maharaj', legalBalls: 60, overs: '10.0', maidens: 0, runsConceded: 30, wickets: 1, economy: 3.00, wides: 0, noBalls: 0, dots: 32 },
+      { playerId: 'sa-11', playerName: 'T. Shamsi', legalBalls: 60, overs: '10.0', maidens: 0, runsConceded: 72, wickets: 1, economy: 7.20, wides: 3, noBalls: 1, dots: 20 },
+    ],
+    deliveries: [],
+    overs: [
+      { overNumber: 47, displayOverNumber: 48, bowlerId: 'sa-7', bowlerName: 'M. Jansen', runsConceded: 14, wickets: 0, deliveries: [], isMaiden: false, isCompleted: true },
+      { overNumber: 48, displayOverNumber: 49, bowlerId: 'sa-9', bowlerName: 'K. Rabada', runsConceded: 9, wickets: 0, deliveries: [], isMaiden: false, isCompleted: true },
+      { overNumber: 49, displayOverNumber: 50, bowlerId: 'sa-7', bowlerName: 'M. Jansen', runsConceded: 16, wickets: 0, deliveries: [], isMaiden: false, isCompleted: true },
+    ],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 62, overs: '5.5', batterId: 'ind-1', batterName: 'Rohit Sharma', score: 40, balls: 24 },
+      { wicketNumber: 2, teamRuns: 93, overs: '10.3', batterId: 'ind-2', batterName: 'Shubman Gill', score: 23, balls: 24 },
+      { wicketNumber: 3, teamRuns: 227, overs: '36.5', batterId: 'ind-4', batterName: 'Shreyas Iyer', score: 77, balls: 87 },
+      { wicketNumber: 4, teamRuns: 249, overs: '42.1', batterId: 'ind-5', batterName: 'KL Rahul', score: 8, balls: 17 },
+      { wicketNumber: 5, teamRuns: 285, overs: '46.0', batterId: 'ind-6', batterName: 'Suryakumar Yadav', score: 22, balls: 14 },
+    ],
+    partnerships: [
+      { wicketNumber: 3, batter1Id: 'ind-3', batter1Name: 'Virat Kohli', batter1Runs: 60, batter1Balls: 70, batter2Id: 'ind-4', batter2Name: 'Shreyas Iyer', batter2Runs: 74, batter2Balls: 85, totalRuns: 134, totalBalls: 155, isCurrent: false },
+    ],
+    wagonShots: [
+      { id: 'ws-ind-1', angle: 45, distance: 88, runs: 4, isFour: true, isSix: false, batterName: 'Virat Kohli', over: '24.2', description: 'Cover drive boundary' },
+      { id: 'ws-ind-2', angle: 140, distance: 92, runs: 6, isFour: false, isSix: true, batterName: 'Rohit Sharma', over: '3.4', description: 'Pull over midwicket' },
+    ],
+    isCompleted: true,
+  };
+
+  const saInnings2: Innings = {
+    inningsNumber: 2,
+    battingTeamId: 'team-sa',
+    battingTeamName: 'South Africa',
+    bowlingTeamId: 'team-ind',
+    bowlingTeamName: 'India',
+    runs: 243,
+    wickets: 10,
+    legalBalls: 262, // 43.4 overs
+    oversFormatted: '43.4',
+    extras: { wides: 6, noBalls: 1, byes: 2, legByes: 3, penaltyRuns: 0, total: 12 },
+    strikerId: 'sa-11',
+    nonStrikerId: 'sa-10',
+    currentBowlerId: 'ind-7',
+    battingCard: [
+      { playerId: 'sa-1', playerName: 'Quinton de Kock', runs: 5, ballsFaced: 10, fours: 1, sixes: 0, dots: 7, strikeRate: 50.0, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sa-1', dismissedBatterName: 'Quinton de Kock', bowlerId: 'ind-10', bowlerName: 'J. Bumrah', creditedToBowler: true, text: 'b Bumrah', over: '1.4', teamScoreAtDismissal: 6, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'sa-2', playerName: 'Temba Bavuma', runs: 11, ballsFaced: 19, fours: 1, sixes: 0, dots: 12, strikeRate: 57.9, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sa-2', dismissedBatterName: 'Temba Bavuma', bowlerId: 'ind-7', bowlerName: 'R. Jadeja', creditedToBowler: true, text: 'b Jadeja', over: '8.3', teamScoreAtDismissal: 22, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'sa-3', playerName: 'Rassie van der Dussen', runs: 13, ballsFaced: 32, fours: 0, sixes: 0, dots: 22, strikeRate: 40.6, isOut: true, dismissal: { type: 'lbw', dismissedBatterId: 'sa-3', dismissedBatterName: 'Rassie van der Dussen', bowlerId: 'ind-11', bowlerName: 'M. Shami', creditedToBowler: true, text: 'lbw b Shami', over: '13.1', teamScoreAtDismissal: 40, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'sa-4', playerName: 'Aiden Markram', runs: 9, ballsFaced: 6, fours: 2, sixes: 0, dots: 3, strikeRate: 150.0, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sa-4', dismissedBatterName: 'Aiden Markram', bowlerId: 'ind-11', bowlerName: 'M. Shami', fielderName: 'KL Rahul', creditedToBowler: true, text: 'c Rahul b Shami', over: '9.5', teamScoreAtDismissal: 35, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'sa-5', playerName: 'Heinrich Klaasen', runs: 42, ballsFaced: 38, fours: 4, sixes: 2, dots: 16, strikeRate: 110.5, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sa-5', dismissedBatterName: 'Heinrich Klaasen', bowlerId: 'ind-7', bowlerName: 'R. Jadeja', creditedToBowler: true, text: 'b Jadeja', over: '23.4', teamScoreAtDismissal: 112, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'sa-6', playerName: 'David Miller', runs: 56, ballsFaced: 52, fours: 5, sixes: 2, dots: 20, strikeRate: 107.7, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sa-6', dismissedBatterName: 'David Miller', bowlerId: 'ind-7', bowlerName: 'R. Jadeja', creditedToBowler: true, text: 'b Jadeja', over: '31.2', teamScoreAtDismissal: 168, wicketNumber: 6 }, isBatting: false },
+      { playerId: 'sa-7', playerName: 'Marco Jansen', runs: 44, ballsFaced: 40, fours: 4, sixes: 1, dots: 18, strikeRate: 110.0, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sa-7', dismissedBatterName: 'Marco Jansen', bowlerId: 'ind-9', bowlerName: 'K. Yadav', fielderName: 'R. Jadeja', creditedToBowler: true, text: 'c Jadeja b Kuldeep', over: '38.2', teamScoreAtDismissal: 215, wicketNumber: 7 }, isBatting: false },
+      { playerId: 'sa-8', playerName: 'Keshav Maharaj', runs: 18, ballsFaced: 22, fours: 2, sixes: 0, dots: 10, strikeRate: 81.8, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sa-8', dismissedBatterName: 'Keshav Maharaj', bowlerId: 'ind-7', bowlerName: 'R. Jadeja', creditedToBowler: true, text: 'b Jadeja', over: '41.1', teamScoreAtDismissal: 235, wicketNumber: 8 }, isBatting: false },
+      { playerId: 'sa-9', playerName: 'Kagiso Rabada', runs: 6, ballsFaced: 9, fours: 1, sixes: 0, dots: 5, strikeRate: 66.7, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sa-9', dismissedBatterName: 'Kagiso Rabada', bowlerId: 'ind-7', bowlerName: 'R. Jadeja', fielderName: 'R. Jadeja', creditedToBowler: true, text: 'c & b Jadeja', over: '42.5', teamScoreAtDismissal: 240, wicketNumber: 9 }, isBatting: false },
+      { playerId: 'sa-10', playerName: 'Lungi Ngidi', runs: 0, ballsFaced: 3, fours: 0, sixes: 0, dots: 3, strikeRate: 0.0, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sa-10', dismissedBatterName: 'Lungi Ngidi', bowlerId: 'ind-9', bowlerName: 'K. Yadav', fielderName: 'S. Iyer', creditedToBowler: true, text: 'c Iyer b Kuldeep', over: '43.4', teamScoreAtDismissal: 243, wicketNumber: 10 }, isBatting: false },
+      { playerId: 'sa-11', playerName: 'Tabraiz Shamsi', runs: 4, ballsFaced: 7, fours: 0, sixes: 0, dots: 4, strikeRate: 57.1, isOut: false, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'ind-10', playerName: 'J. Bumrah', legalBalls: 30, overs: '5.0', maidens: 0, runsConceded: 14, wickets: 1, economy: 2.80, wides: 1, noBalls: 0, dots: 20 },
+      { playerId: 'ind-11', playerName: 'M. Shami', legalBalls: 42, overs: '7.0', maidens: 1, runsConceded: 38, wickets: 2, economy: 5.43, wides: 2, noBalls: 0, dots: 22 },
+      { playerId: 'ind-7', playerName: 'R. Jadeja', legalBalls: 54, overs: '9.0', maidens: 1, runsConceded: 33, wickets: 5, economy: 3.67, wides: 1, noBalls: 0, dots: 34 },
+      { playerId: 'ind-9', playerName: 'K. Yadav', legalBalls: 52, overs: '8.4', maidens: 0, runsConceded: 42, wickets: 2, economy: 4.85, wides: 1, noBalls: 1, dots: 26 },
+      { playerId: 'ind-8', playerName: 'M. Siraj', legalBalls: 48, overs: '8.0', maidens: 0, runsConceded: 58, wickets: 0, economy: 7.25, wides: 1, noBalls: 0, dots: 18 },
+    ],
+    deliveries: [],
+    overs: [
+      { overNumber: 41, displayOverNumber: 42, bowlerId: 'ind-7', bowlerName: 'R. Jadeja', runsConceded: 3, wickets: 1, deliveries: [], isMaiden: false, isCompleted: true },
+      { overNumber: 42, displayOverNumber: 43, bowlerId: 'ind-9', bowlerName: 'K. Yadav', runsConceded: 5, wickets: 0, deliveries: [], isMaiden: false, isCompleted: true },
+      { overNumber: 43, displayOverNumber: 44, bowlerId: 'ind-7', bowlerName: 'R. Jadeja', runsConceded: 3, wickets: 1, deliveries: [], isMaiden: false, isCompleted: true },
+    ],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 6, overs: '1.4', batterId: 'sa-1', batterName: 'Quinton de Kock', score: 5, balls: 10 },
+      { wicketNumber: 2, teamRuns: 22, overs: '8.3', batterId: 'sa-2', batterName: 'Temba Bavuma', score: 11, balls: 19 },
+      { wicketNumber: 3, teamRuns: 35, overs: '9.5', batterId: 'sa-4', batterName: 'Aiden Markram', score: 9, balls: 6 },
+      { wicketNumber: 4, teamRuns: 40, overs: '13.1', batterId: 'sa-3', batterName: 'Rassie van der Dussen', score: 13, balls: 32 },
+      { wicketNumber: 5, teamRuns: 112, overs: '23.4', batterId: 'sa-5', batterName: 'Heinrich Klaasen', score: 42, balls: 38 },
+      { wicketNumber: 6, teamRuns: 168, overs: '31.2', batterId: 'sa-6', batterName: 'David Miller', score: 56, balls: 52 },
+      { wicketNumber: 7, teamRuns: 215, overs: '38.2', batterId: 'sa-7', batterName: 'Marco Jansen', score: 44, balls: 40 },
+      { wicketNumber: 8, teamRuns: 235, overs: '41.1', batterId: 'sa-8', batterName: 'Keshav Maharaj', score: 18, balls: 22 },
+      { wicketNumber: 9, teamRuns: 240, overs: '42.5', batterId: 'sa-9', batterName: 'Kagiso Rabada', score: 6, balls: 9 },
+      { wicketNumber: 10, teamRuns: 243, overs: '43.4', batterId: 'sa-10', batterName: 'Lungi Ngidi', score: 0, balls: 3 },
+    ],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: true,
+  };
+
+  return {
+    id: 'match-ind-sa-2024',
+    title: 'IND vs SA',
+    subtitle: 'ODI • Eden Gardens, Kolkata',
+    seriesName: 'Bilateral Series Cup',
+    venue: 'Eden Gardens, Kolkata',
+    format: 'ODI',
+    totalOvers: 50,
+    ballsPerOver: 6,
+    team1: indiaTeam,
+    team2: southAfricaTeam,
+    tossWinnerId: 'team-ind',
+    tossDecision: 'bat',
+    currentInningsIndex: 1,
+    innings: [indInnings1, saInnings2],
+    target: 327,
+    dlsPar: 280,
+    status: 'completed',
+    result: {
+      winnerTeamId: 'team-ind',
+      winnerTeamName: 'India',
+      margin: 'by 83 runs',
+      summary: 'India won by 83 runs',
+      playerOfTheMatch: 'Virat Kohli (101*) & Ravindra Jadeja (5/33)',
+      isTie: false,
+      isDraw: false,
+    },
+    createdAt: '2024-10-24T14:00:00Z',
+    updatedAt: '2024-10-24T22:30:00Z',
+  };
+}
+
+// --- 3. MATCH: NEW ZEALAND VS PAKISTAN (T20I, HAGLEY OVAL) ---
+export function createNzPakMatch(): Match {
+  const nzInnings1: Innings = {
+    inningsNumber: 1,
+    battingTeamId: 'team-nz',
+    battingTeamName: 'New Zealand',
+    bowlingTeamId: 'team-pak',
+    bowlingTeamName: 'Pakistan',
+    runs: 185,
+    wickets: 6,
+    legalBalls: 120,
+    oversFormatted: '20.0',
+    extras: { wides: 4, noBalls: 1, byes: 1, legByes: 2, penaltyRuns: 0, total: 8 },
+    strikerId: 'nz-7',
+    nonStrikerId: 'nz-8',
+    currentBowlerId: 'pak-8',
+    battingCard: [
+      { playerId: 'nz-1', playerName: 'Finn Allen', runs: 34, ballsFaced: 16, fours: 4, sixes: 2, dots: 5, strikeRate: 212.5, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'nz-1', dismissedBatterName: 'Finn Allen', bowlerId: 'pak-8', bowlerName: 'S. Afridi', fielderName: 'B. Azam', creditedToBowler: true, text: 'c Babar b Shaheen', over: '3.4', teamScoreAtDismissal: 45, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'nz-2', playerName: 'Devon Conway', runs: 28, ballsFaced: 20, fours: 3, sixes: 1, dots: 6, strikeRate: 140.0, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'nz-2', dismissedBatterName: 'Devon Conway', bowlerId: 'pak-9', bowlerName: 'N. Shah', creditedToBowler: true, text: 'b Naseem', over: '7.1', teamScoreAtDismissal: 72, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'nz-3', playerName: 'Kane Williamson', runs: 26, ballsFaced: 22, fours: 2, sixes: 0, dots: 7, strikeRate: 118.2, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'nz-3', dismissedBatterName: 'Kane Williamson', bowlerId: 'pak-7', bowlerName: 'S. Khan', fielderName: 'F. Zaman', creditedToBowler: true, text: 'c Fakhar b Shadab', over: '12.3', teamScoreAtDismissal: 114, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'nz-4', playerName: 'Daryl Mitchell', runs: 58, ballsFaced: 34, fours: 5, sixes: 3, dots: 8, strikeRate: 170.6, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'nz-4', dismissedBatterName: 'Daryl Mitchell', bowlerId: 'pak-10', bowlerName: 'H. Rauf', fielderName: 'I. Ahmed', creditedToBowler: true, text: 'c Iftikhar b Rauf', over: '18.5', teamScoreAtDismissal: 174, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'nz-5', playerName: 'Glenn Phillips', runs: 19, ballsFaced: 14, fours: 2, sixes: 0, dots: 4, strikeRate: 135.7, isOut: true, dismissal: { type: 'run_out', dismissedBatterId: 'nz-5', dismissedBatterName: 'Glenn Phillips', fielderName: 'S. Khan', creditedToBowler: false, text: 'run out (Shadab)', over: '19.2', teamScoreAtDismissal: 178, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'nz-6', playerName: 'Mark Chapman', runs: 8, ballsFaced: 6, fours: 1, sixes: 0, dots: 2, strikeRate: 133.3, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'nz-6', dismissedBatterName: 'Mark Chapman', bowlerId: 'pak-8', bowlerName: 'S. Afridi', creditedToBowler: true, text: 'b Shaheen', over: '19.5', teamScoreAtDismissal: 184, wicketNumber: 6 }, isBatting: false },
+      { playerId: 'nz-7', playerName: 'Mitchell Santner', runs: 6, ballsFaced: 4, fours: 1, sixes: 0, dots: 1, strikeRate: 150.0, isOut: false, isBatting: false },
+      { playerId: 'nz-8', playerName: 'Matt Henry', runs: 1, ballsFaced: 1, fours: 0, sixes: 0, dots: 0, strikeRate: 100.0, isOut: false, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'pak-8', playerName: 'S. Afridi', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 28, wickets: 2, economy: 7.00, wides: 1, noBalls: 0, dots: 11 },
+      { playerId: 'pak-9', playerName: 'N. Shah', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 35, wickets: 1, economy: 8.75, wides: 1, noBalls: 0, dots: 9 },
+      { playerId: 'pak-10', playerName: 'H. Rauf', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 42, wickets: 1, economy: 10.50, wides: 1, noBalls: 1, dots: 8 },
+      { playerId: 'pak-11', playerName: 'M. Amir', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 36, wickets: 0, economy: 9.00, wides: 0, noBalls: 0, dots: 8 },
+      { playerId: 'pak-7', playerName: 'S. Khan', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 38, wickets: 1, economy: 9.50, wides: 1, noBalls: 0, dots: 7 },
+    ],
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 45, overs: '3.4', batterId: 'nz-1', batterName: 'Finn Allen', score: 34, balls: 16 },
+      { wicketNumber: 2, teamRuns: 72, overs: '7.1', batterId: 'nz-2', batterName: 'Devon Conway', score: 28, balls: 20 },
+      { wicketNumber: 3, teamRuns: 114, overs: '12.3', batterId: 'nz-3', batterName: 'Kane Williamson', score: 26, balls: 22 },
+      { wicketNumber: 4, teamRuns: 174, overs: '18.5', batterId: 'nz-4', batterName: 'Daryl Mitchell', score: 58, balls: 34 },
+      { wicketNumber: 5, teamRuns: 178, overs: '19.2', batterId: 'nz-5', batterName: 'Glenn Phillips', score: 19, balls: 14 },
+      { wicketNumber: 6, teamRuns: 184, overs: '19.5', batterId: 'nz-6', batterName: 'Mark Chapman', score: 8, balls: 6 },
+    ],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: true,
+  };
+
+  const pakInnings2: Innings = {
+    inningsNumber: 2,
+    battingTeamId: 'team-pak',
+    battingTeamName: 'Pakistan',
+    bowlingTeamId: 'team-nz',
+    bowlingTeamName: 'New Zealand',
+    runs: 181,
+    wickets: 9,
+    legalBalls: 120,
+    oversFormatted: '20.0',
+    extras: { wides: 3, noBalls: 1, byes: 1, legByes: 2, penaltyRuns: 0, total: 7 },
+    strikerId: 'pak-10',
+    nonStrikerId: 'pak-11',
+    currentBowlerId: 'nz-9',
+    battingCard: [
+      { playerId: 'pak-1', playerName: 'Babar Azam', runs: 58, ballsFaced: 42, fours: 6, sixes: 1, dots: 12, strikeRate: 138.1, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'pak-1', dismissedBatterName: 'Babar Azam', bowlerId: 'nz-9', bowlerName: 'T. Boult', fielderName: 'K. Williamson', creditedToBowler: true, text: 'c Williamson b Boult', over: '14.2', teamScoreAtDismissal: 128, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'pak-2', playerName: 'Mohammad Rizwan', runs: 32, ballsFaced: 24, fours: 3, sixes: 1, dots: 7, strikeRate: 133.3, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'pak-2', dismissedBatterName: 'Mohammad Rizwan', bowlerId: 'nz-8', bowlerName: 'M. Henry', fielderName: 'D. Conway', creditedToBowler: true, text: 'c Conway b Henry', over: '6.4', teamScoreAtDismissal: 58, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'pak-3', playerName: 'Fakhar Zaman', runs: 24, ballsFaced: 16, fours: 2, sixes: 1, dots: 5, strikeRate: 150.0, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'pak-3', dismissedBatterName: 'Fakhar Zaman', bowlerId: 'nz-7', bowlerName: 'M. Santner', creditedToBowler: true, text: 'b Santner', over: '10.5', teamScoreAtDismissal: 95, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'pak-4', playerName: 'Usman Khan', runs: 12, ballsFaced: 9, fours: 1, sixes: 0, dots: 3, strikeRate: 133.3, isOut: true, dismissal: { type: 'lbw', dismissedBatterId: 'pak-4', dismissedBatterName: 'Usman Khan', bowlerId: 'nz-10', bowlerName: 'L. Ferguson', creditedToBowler: true, text: 'lbw b Ferguson', over: '16.1', teamScoreAtDismissal: 142, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'pak-5', playerName: 'Iftikhar Ahmed', runs: 21, ballsFaced: 11, fours: 1, sixes: 2, dots: 3, strikeRate: 190.9, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'pak-5', dismissedBatterName: 'Iftikhar Ahmed', bowlerId: 'nz-10', bowlerName: 'L. Ferguson', fielderName: 'D. Mitchell', creditedToBowler: true, text: 'c Mitchell b Ferguson', over: '18.2', teamScoreAtDismissal: 165, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'pak-6', playerName: 'Shadab Khan', runs: 9, ballsFaced: 6, fours: 1, sixes: 0, dots: 2, strikeRate: 150.0, isOut: true, dismissal: { type: 'run_out', dismissedBatterId: 'pak-6', dismissedBatterName: 'Shadab Khan', fielderName: 'G. Phillips', creditedToBowler: false, text: 'run out (Phillips)', over: '19.1', teamScoreAtDismissal: 175, wicketNumber: 6 }, isBatting: false },
+      { playerId: 'pak-7', playerName: 'Shaheen Afridi', runs: 8, ballsFaced: 5, fours: 1, sixes: 0, dots: 2, strikeRate: 160.0, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'pak-7', dismissedBatterName: 'Shaheen Afridi', bowlerId: 'nz-9', bowlerName: 'T. Boult', creditedToBowler: true, text: 'b Boult', over: '19.3', teamScoreAtDismissal: 177, wicketNumber: 7 }, isBatting: false },
+      { playerId: 'pak-8', playerName: 'Naseem Shah', runs: 2, ballsFaced: 3, fours: 0, sixes: 0, dots: 1, strikeRate: 66.7, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'pak-8', dismissedBatterName: 'Naseem Shah', bowlerId: 'nz-9', bowlerName: 'T. Boult', fielderName: 'F. Allen', creditedToBowler: true, text: 'c Allen b Boult', over: '19.5', teamScoreAtDismissal: 180, wicketNumber: 8 }, isBatting: false },
+      { playerId: 'pak-9', playerName: 'Haris Rauf', runs: 1, ballsFaced: 2, fours: 0, sixes: 0, dots: 1, strikeRate: 50.0, isOut: true, dismissal: { type: 'run_out', dismissedBatterId: 'pak-9', dismissedBatterName: 'Haris Rauf', fielderName: 'D. Conway', creditedToBowler: false, text: 'run out (Conway)', over: '20.0', teamScoreAtDismissal: 181, wicketNumber: 9 }, isBatting: false },
+      { playerId: 'pak-10', playerName: 'Mohammad Amir', runs: 4, ballsFaced: 2, fours: 0, sixes: 0, dots: 0, strikeRate: 200.0, isOut: false, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'nz-9', playerName: 'T. Boult', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 32, wickets: 3, economy: 8.00, wides: 1, noBalls: 0, dots: 10 },
+      { playerId: 'nz-8', playerName: 'M. Henry', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 34, wickets: 1, economy: 8.50, wides: 0, noBalls: 0, dots: 9 },
+      { playerId: 'nz-10', playerName: 'L. Ferguson', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 38, wickets: 2, economy: 9.50, wides: 1, noBalls: 1, dots: 8 },
+      { playerId: 'nz-7', playerName: 'M. Santner', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 36, wickets: 1, economy: 9.00, wides: 1, noBalls: 0, dots: 7 },
+      { playerId: 'nz-11', playerName: 'I. Sodhi', legalBalls: 24, overs: '4.0', maidens: 0, runsConceded: 39, wickets: 0, economy: 9.75, wides: 0, noBalls: 0, dots: 6 },
+    ],
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 58, overs: '6.4', batterId: 'pak-2', batterName: 'Mohammad Rizwan', score: 32, balls: 24 },
+      { wicketNumber: 2, teamRuns: 95, overs: '10.5', batterId: 'pak-3', batterName: 'Fakhar Zaman', score: 24, balls: 16 },
+      { wicketNumber: 3, teamRuns: 128, overs: '14.2', batterId: 'pak-1', batterName: 'Babar Azam', score: 58, balls: 42 },
+      { wicketNumber: 4, teamRuns: 142, overs: '16.1', batterId: 'pak-4', batterName: 'Usman Khan', score: 12, balls: 9 },
+      { wicketNumber: 5, teamRuns: 165, overs: '18.2', batterId: 'pak-5', batterName: 'Iftikhar Ahmed', score: 21, balls: 11 },
+      { wicketNumber: 6, teamRuns: 175, overs: '19.1', batterId: 'pak-6', batterName: 'Shadab Khan', score: 9, balls: 6 },
+      { wicketNumber: 7, teamRuns: 177, overs: '19.3', batterId: 'pak-7', batterName: 'Shaheen Afridi', score: 8, balls: 5 },
+      { wicketNumber: 8, teamRuns: 180, overs: '19.5', batterId: 'pak-8', batterName: 'Naseem Shah', score: 2, balls: 3 },
+      { wicketNumber: 9, teamRuns: 181, overs: '20.0', batterId: 'pak-9', batterName: 'Haris Rauf', score: 1, balls: 2 },
+    ],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: true,
+  };
+
+  return {
+    id: 'match-nz-pak-2024',
+    title: 'NZ vs PAK',
+    subtitle: 'T20I • Hagley Oval, Christchurch',
+    seriesName: 'Autumn Invitational',
+    venue: 'Hagley Oval, Christchurch',
+    format: 'T20',
+    totalOvers: 20,
+    ballsPerOver: 6,
+    team1: newZealandTeam,
+    team2: pakistanTeam,
+    tossWinnerId: 'team-nz',
+    tossDecision: 'bat',
+    currentInningsIndex: 1,
+    innings: [nzInnings1, pakInnings2],
+    target: 186,
+    dlsPar: 180,
+    status: 'completed',
+    result: {
+      winnerTeamId: 'team-nz',
+      winnerTeamName: 'New Zealand',
+      margin: 'by 4 runs',
+      summary: 'New Zealand won by 4 runs (Last ball thriller)',
+      playerOfTheMatch: 'Daryl Mitchell (58 off 34)',
+      isTie: false,
+      isDraw: false,
+    },
+    createdAt: '2024-10-19T10:00:00Z',
+    updatedAt: '2024-10-19T13:45:00Z',
+  };
+}
+
+// --- 4. MATCH: YORKSHIRE VS SURREY (COUNTY 4-DAY, HEADINGLEY) ---
+export function createYorkSurreyMatch(): Match {
+  const yorkTeam: Team = {
+    id: 'team-york',
+    name: 'Yorkshire CC',
+    shortName: 'YOR',
+    color: '#0284c7',
+    players: [
+      { id: 'yor-1', name: 'Adam Lyth', shortName: 'A. Lyth', role: 'batter', battingStyle: 'Left-hand bat' },
+      { id: 'yor-2', name: 'Finlay Bean', shortName: 'F. Bean', role: 'batter', battingStyle: 'Left-hand bat' },
+      { id: 'yor-3', name: 'Shan Masood', shortName: 'S. Masood', role: 'batter', battingStyle: 'Left-hand bat' },
+      { id: 'yor-4', name: 'Joe Root', shortName: 'J. Root', role: 'batter', battingStyle: 'Right-hand bat' },
+      { id: 'yor-5', name: 'Harry Brook', shortName: 'H. Brook', role: 'batter', battingStyle: 'Right-hand bat' },
+      { id: 'yor-6', name: 'Jonny Bairstow', shortName: 'J. Bairstow', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+      { id: 'yor-7', name: 'George Hill', shortName: 'G. Hill', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm medium' },
+      { id: 'yor-8', name: 'Jordan Thompson', shortName: 'J. Thompson', role: 'allrounder', battingStyle: 'Left-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'yor-9', name: 'Matthew Fisher', shortName: 'M. Fisher', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'yor-10', name: 'Ben Coad', shortName: 'B. Coad', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'yor-11', name: 'Jack Shutt', shortName: 'J. Shutt', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm offbreak' },
+      // 4 Substitutes
+      { id: 'yor-12', name: 'Dominic Bess', shortName: 'D. Bess', role: 'allrounder', isSubstitute: true },
+      { id: 'yor-13', name: 'Will Luxton', shortName: 'W. Luxton', role: 'batter', isSubstitute: true },
+      { id: 'yor-14', name: 'Harry Duke', shortName: 'H. Duke', role: 'wicketkeeper', isSubstitute: true },
+      { id: 'yor-15', name: 'Mickey Edwards', shortName: 'M. Edwards', role: 'bowler', isSubstitute: true },
+    ],
+  };
+
+  const surreyTeam: Team = {
+    id: 'team-sur',
+    name: 'Surrey CCC',
+    shortName: 'SUR',
+    color: '#334155',
+    players: [
+      { id: 'sur-1', name: 'Rory Burns', shortName: 'R. Burns', role: 'batter', battingStyle: 'Left-hand bat' },
+      { id: 'sur-2', name: 'Dom Sibley', shortName: 'D. Sibley', role: 'batter', battingStyle: 'Right-hand bat' },
+      { id: 'sur-3', name: 'Ollie Pope', shortName: 'O. Pope', role: 'batter', battingStyle: 'Right-hand bat' },
+      { id: 'sur-4', name: 'Dan Lawrence', shortName: 'D. Lawrence', role: 'batter', battingStyle: 'Right-hand bat' },
+      { id: 'sur-5', name: 'Ben Foakes', shortName: 'B. Foakes', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+      { id: 'sur-6', name: 'Jamie Smith', shortName: 'J. Smith', role: 'wicketkeeper', battingStyle: 'Right-hand bat' },
+      { id: 'sur-7', name: 'Jordan Clark', shortName: 'J. Clark', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'sur-8', name: 'Sean Abbott', shortName: 'S. Abbott', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'sur-9', name: 'Tom Lawes', shortName: 'T. Lawes', role: 'allrounder', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      { id: 'sur-10', name: 'Kemar Roach', shortName: 'K. Roach', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast' },
+      { id: 'sur-11', name: 'Dan Worrall', shortName: 'D. Worrall', role: 'bowler', battingStyle: 'Right-hand bat', bowlingStyle: 'Right-arm fast-medium' },
+      // 4 Substitutes
+      { id: 'sur-12', name: 'Cameron Steel', shortName: 'C. Steel', role: 'allrounder', isSubstitute: true },
+      { id: 'sur-13', name: 'Ryan Patel', shortName: 'R. Patel', role: 'batter', isSubstitute: true },
+      { id: 'sur-14', name: 'Gus Atkinson', shortName: 'G. Atkinson', role: 'bowler', isSubstitute: true },
+      { id: 'sur-15', name: 'Conor McKerr', shortName: 'C. McKerr', role: 'bowler', isSubstitute: true },
+    ],
+  };
+
+  const yorInnings1: Innings = {
+    inningsNumber: 1,
+    battingTeamId: 'team-york',
+    battingTeamName: 'Yorkshire CC',
+    bowlingTeamId: 'team-sur',
+    bowlingTeamName: 'Surrey CCC',
+    runs: 412,
+    wickets: 10,
+    legalBalls: 684,
+    oversFormatted: '114.0',
+    extras: { wides: 8, noBalls: 4, byes: 12, legByes: 10, penaltyRuns: 0, total: 34 },
+    strikerId: 'yor-11',
+    nonStrikerId: 'yor-10',
+    currentBowlerId: 'sur-10',
+    battingCard: [
+      { playerId: 'yor-1', playerName: 'Adam Lyth', runs: 115, ballsFaced: 198, fours: 15, sixes: 1, dots: 110, strikeRate: 58.1, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'yor-1', dismissedBatterName: 'Adam Lyth', bowlerId: 'sur-11', bowlerName: 'D. Worrall', fielderName: 'B. Foakes', creditedToBowler: true, text: 'c Foakes b Worrall', over: '54.2', teamScoreAtDismissal: 195, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'yor-2', playerName: 'Finlay Bean', runs: 42, ballsFaced: 88, fours: 6, sixes: 0, dots: 52, strikeRate: 47.7, isOut: true, dismissal: { type: 'lbw', dismissedBatterId: 'yor-2', dismissedBatterName: 'Finlay Bean', bowlerId: 'sur-10', bowlerName: 'K. Roach', creditedToBowler: true, text: 'lbw b Roach', over: '26.4', teamScoreAtDismissal: 92, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'yor-3', playerName: 'Shan Masood', runs: 68, ballsFaced: 112, fours: 9, sixes: 0, dots: 60, strikeRate: 60.7, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'yor-3', dismissedBatterName: 'Shan Masood', bowlerId: 'sur-7', bowlerName: 'J. Clark', creditedToBowler: true, text: 'b Clark', over: '72.1', teamScoreAtDismissal: 278, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'yor-4', playerName: 'Joe Root', runs: 85, ballsFaced: 140, fours: 10, sixes: 0, dots: 75, strikeRate: 60.7, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'yor-4', dismissedBatterName: 'Joe Root', bowlerId: 'sur-11', bowlerName: 'D. Worrall', fielderName: 'O. Pope', creditedToBowler: true, text: 'c Pope b Worrall', over: '94.5', teamScoreAtDismissal: 350, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'yor-5', playerName: 'Harry Brook', runs: 38, ballsFaced: 44, fours: 5, sixes: 1, dots: 20, strikeRate: 86.4, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'yor-5', dismissedBatterName: 'Harry Brook', bowlerId: 'sur-8', bowlerName: 'S. Abbott', fielderName: 'R. Burns', creditedToBowler: true, text: 'c Burns b Abbott', over: '102.3', teamScoreAtDismissal: 385, wicketNumber: 5 }, isBatting: false },
+      { playerId: 'yor-6', playerName: 'Jonny Bairstow', runs: 24, ballsFaced: 36, fours: 3, sixes: 0, dots: 18, strikeRate: 66.7, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'yor-6', dismissedBatterName: 'Jonny Bairstow', bowlerId: 'sur-10', bowlerName: 'K. Roach', creditedToBowler: true, text: 'b Roach', over: '109.1', teamScoreAtDismissal: 402, wicketNumber: 6 }, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'sur-10', playerName: 'K. Roach', legalBalls: 132, overs: '22.0', maidens: 5, runsConceded: 72, wickets: 3, economy: 3.27, wides: 2, noBalls: 1, dots: 80 },
+      { playerId: 'sur-11', playerName: 'D. Worrall', legalBalls: 156, overs: '26.0', maidens: 6, runsConceded: 88, wickets: 3, economy: 3.38, wides: 1, noBalls: 0, dots: 95 },
+      { playerId: 'sur-7', playerName: 'J. Clark', legalBalls: 120, overs: '20.0', maidens: 3, runsConceded: 76, wickets: 2, economy: 3.80, wides: 2, noBalls: 1, dots: 70 },
+      { playerId: 'sur-8', playerName: 'S. Abbott', legalBalls: 138, overs: '23.0', maidens: 4, runsConceded: 82, wickets: 2, economy: 3.57, wides: 1, noBalls: 1, dots: 82 },
+    ],
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 92, overs: '26.4', batterId: 'yor-2', batterName: 'Finlay Bean', score: 42, balls: 88 },
+      { wicketNumber: 2, teamRuns: 195, overs: '54.2', batterId: 'yor-1', batterName: 'Adam Lyth', score: 115, balls: 198 },
+      { wicketNumber: 3, teamRuns: 278, overs: '72.1', batterId: 'yor-3', batterName: 'Shan Masood', score: 68, balls: 112 },
+      { wicketNumber: 4, teamRuns: 350, overs: '94.5', batterId: 'yor-4', batterName: 'Joe Root', score: 85, balls: 140 },
+    ],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: true,
+  };
+
+  const surInnings2: Innings = {
+    inningsNumber: 2,
+    battingTeamId: 'team-sur',
+    battingTeamName: 'Surrey CCC',
+    bowlingTeamId: 'team-york',
+    bowlingTeamName: 'Yorkshire CC',
+    runs: 389,
+    wickets: 10,
+    legalBalls: 648,
+    oversFormatted: '108.0',
+    extras: { wides: 6, noBalls: 2, byes: 8, legByes: 9, penaltyRuns: 0, total: 25 },
+    strikerId: 'sur-11',
+    nonStrikerId: 'sur-10',
+    currentBowlerId: 'yor-10',
+    battingCard: [
+      { playerId: 'sur-1', playerName: 'Rory Burns', runs: 74, ballsFaced: 160, fours: 9, sixes: 0, dots: 98, strikeRate: 46.3, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sur-1', dismissedBatterName: 'Rory Burns', bowlerId: 'yor-10', bowlerName: 'B. Coad', fielderName: 'J. Bairstow', creditedToBowler: true, text: 'c Bairstow b Coad', over: '48.1', teamScoreAtDismissal: 145, wicketNumber: 1 }, isBatting: false },
+      { playerId: 'sur-2', playerName: 'Dom Sibley', runs: 62, ballsFaced: 145, fours: 7, sixes: 0, dots: 90, strikeRate: 42.8, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sur-2', dismissedBatterName: 'Dom Sibley', bowlerId: 'yor-9', bowlerName: 'M. Fisher', creditedToBowler: true, text: 'b Fisher', over: '42.3', teamScoreAtDismissal: 128, wicketNumber: 2 }, isBatting: false },
+      { playerId: 'sur-3', playerName: 'Ollie Pope', runs: 96, ballsFaced: 132, fours: 12, sixes: 1, dots: 70, strikeRate: 72.7, isOut: true, dismissal: { type: 'caught', dismissedBatterId: 'sur-3', dismissedBatterName: 'Ollie Pope', bowlerId: 'yor-10', bowlerName: 'B. Coad', fielderName: 'A. Lyth', creditedToBowler: true, text: 'c Lyth b Coad', over: '75.4', teamScoreAtDismissal: 260, wicketNumber: 3 }, isBatting: false },
+      { playerId: 'sur-4', playerName: 'Dan Lawrence', runs: 55, ballsFaced: 80, fours: 6, sixes: 1, dots: 42, strikeRate: 68.8, isOut: true, dismissal: { type: 'lbw', dismissedBatterId: 'sur-4', dismissedBatterName: 'Dan Lawrence', bowlerId: 'yor-8', bowlerName: 'J. Thompson', creditedToBowler: true, text: 'lbw b Thompson', over: '88.2', teamScoreAtDismissal: 315, wicketNumber: 4 }, isBatting: false },
+      { playerId: 'sur-5', playerName: 'Ben Foakes', runs: 48, ballsFaced: 92, fours: 5, sixes: 0, dots: 55, strikeRate: 52.2, isOut: true, dismissal: { type: 'bowled', dismissedBatterId: 'sur-5', dismissedBatterName: 'Ben Foakes', bowlerId: 'yor-10', bowlerName: 'B. Coad', creditedToBowler: true, text: 'b Coad', over: '99.5', teamScoreAtDismissal: 362, wicketNumber: 5 }, isBatting: false },
+    ],
+    bowlingCard: [
+      { playerId: 'yor-10', playerName: 'B. Coad', legalBalls: 168, overs: '28.0', maidens: 8, runsConceded: 82, wickets: 4, economy: 2.93, wides: 1, noBalls: 0, dots: 110 },
+      { playerId: 'yor-9', playerName: 'M. Fisher', legalBalls: 144, overs: '24.0', maidens: 5, runsConceded: 88, wickets: 2, economy: 3.67, wides: 2, noBalls: 1, dots: 90 },
+      { playerId: 'yor-8', playerName: 'J. Thompson', legalBalls: 132, overs: '22.0', maidens: 4, runsConceded: 78, wickets: 2, economy: 3.55, wides: 1, noBalls: 1, dots: 80 },
+    ],
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [
+      { wicketNumber: 1, teamRuns: 128, overs: '42.3', batterId: 'sur-2', batterName: 'Dom Sibley', score: 62, balls: 145 },
+      { wicketNumber: 2, teamRuns: 145, overs: '48.1', batterId: 'sur-1', batterName: 'Rory Burns', score: 74, balls: 160 },
+      { wicketNumber: 3, teamRuns: 260, overs: '75.4', batterId: 'sur-3', batterName: 'Ollie Pope', score: 96, balls: 132 },
+    ],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: true,
+  };
+
+  return {
+    id: 'match-york-surrey-2024',
+    title: 'Yorkshire vs Surrey',
+    subtitle: 'County 4-Day • Headingley, Leeds',
+    seriesName: 'Championship Division 1',
+    venue: 'Headingley, Leeds',
+    format: 'Test',
+    totalOvers: 100,
+    ballsPerOver: 6,
+    team1: yorkTeam,
+    team2: surreyTeam,
+    tossWinnerId: 'team-york',
+    tossDecision: 'bat',
+    currentInningsIndex: 1,
+    innings: [yorInnings1, surInnings2],
+    target: null,
+    status: 'completed',
+    result: {
+      summary: 'Match Drawn (Points: YOR 11, SUR 12)',
+      playerOfTheMatch: 'Adam Lyth (115)',
+      isTie: false,
+      isDraw: true,
+    },
+    createdAt: '2024-10-12T09:30:00Z',
+    updatedAt: '2024-10-15T17:00:00Z',
+  };
+}
+
+export function createFreshMatch(team1?: Team, team2?: Team): Match {
+  const t1 = team1 || indiaTeam;
+  const t2 = team2 || australiaTeam;
+
+  const t1Playing = t1.players.filter(p => !p.isSubstitute).slice(0, 11);
+  const t1Subs = t1.players.filter(p => p.isSubstitute);
+  const t2Playing = t2.players.filter(p => !p.isSubstitute).slice(0, 11);
+  const t2Subs = t2.players.filter(p => p.isSubstitute);
+
+  const teamA: Team = { ...t1, players: t1Playing, substitutes: t1Subs };
+  const teamB: Team = { ...t2, players: t2Playing, substitutes: t2Subs };
+
+  const inn1: Innings = {
+    inningsNumber: 1,
+    battingTeamId: teamA.id,
+    battingTeamName: teamA.name,
+    bowlingTeamId: teamB.id,
+    bowlingTeamName: teamB.name,
+    runs: 0,
+    wickets: 0,
+    legalBalls: 0,
+    oversFormatted: '0.0',
+    extras: { wides: 0, noBalls: 0, byes: 0, legByes: 0, penaltyRuns: 0, total: 0 },
+    strikerId: teamA.players[0]?.id || '',
+    nonStrikerId: teamA.players[1]?.id || '',
+    currentBowlerId: teamB.players[teamB.players.length - 1]?.id || teamB.players[0]?.id || '',
+    battingCard: teamA.players.map((p, idx) => ({
+      playerId: p.id,
+      playerName: p.name,
+      runs: 0,
+      ballsFaced: 0,
+      fours: 0,
+      sixes: 0,
+      dots: 0,
+      strikeRate: 0,
+      isOut: false,
+      isBatting: idx < 2,
+    })),
+    bowlingCard: teamB.players.map(p => ({
+      playerId: p.id,
+      playerName: p.name,
+      legalBalls: 0,
+      overs: '0.0',
+      maidens: 0,
+      runsConceded: 0,
+      wickets: 0,
+      economy: 0,
+      wides: 0,
+      noBalls: 0,
+      dots: 0,
+    })),
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [],
+    partnerships: [
+      {
+        wicketNumber: 1,
+        batter1Id: teamA.players[0]?.id || '',
+        batter1Name: teamA.players[0]?.name || '',
+        batter1Runs: 0,
+        batter1Balls: 0,
+        batter2Id: teamA.players[1]?.id || '',
+        batter2Name: teamA.players[1]?.name || '',
+        batter2Runs: 0,
+        batter2Balls: 0,
+        totalRuns: 0,
+        totalBalls: 0,
+        isCurrent: true,
+      },
+    ],
+    wagonShots: [],
+    isCompleted: false,
+  };
+
+  const inn2: Innings = {
+    inningsNumber: 2,
+    battingTeamId: teamB.id,
+    battingTeamName: teamB.name,
+    bowlingTeamId: teamA.id,
+    bowlingTeamName: teamA.name,
+    runs: 0,
+    wickets: 0,
+    legalBalls: 0,
+    oversFormatted: '0.0',
+    extras: { wides: 0, noBalls: 0, byes: 0, legByes: 0, penaltyRuns: 0, total: 0 },
+    strikerId: teamB.players[0]?.id || '',
+    nonStrikerId: teamB.players[1]?.id || '',
+    currentBowlerId: teamA.players[teamA.players.length - 1]?.id || teamA.players[0]?.id || '',
+    battingCard: teamB.players.map(p => ({
+      playerId: p.id,
+      playerName: p.name,
+      runs: 0,
+      ballsFaced: 0,
+      fours: 0,
+      sixes: 0,
+      dots: 0,
+      strikeRate: 0,
+      isOut: false,
+      isBatting: false,
+    })),
+    bowlingCard: teamA.players.map(p => ({
+      playerId: p.id,
+      playerName: p.name,
+      legalBalls: 0,
+      overs: '0.0',
+      maidens: 0,
+      runsConceded: 0,
+      wickets: 0,
+      economy: 0,
+      wides: 0,
+      noBalls: 0,
+      dots: 0,
+    })),
+    deliveries: [],
+    overs: [],
+    fallOfWickets: [],
+    partnerships: [],
+    wagonShots: [],
+    isCompleted: false,
+  };
+
+  return {
+    id: `match-${Date.now()}`,
+    title: `${teamA.shortName} vs ${teamB.shortName}`,
+    subtitle: `T20 Match • International Series`,
+    seriesName: `International T20 Championship`,
+    venue: `Melbourne Cricket Ground`,
+    format: 'T20',
+    totalOvers: 20,
+    ballsPerOver: 6,
+    team1: teamA,
+    team2: teamB,
+    tossWinnerId: teamA.id,
+    tossDecision: 'bat',
+    currentInningsIndex: 0,
+    innings: [inn1, inn2],
+    target: null,
+    dlsPar: 140,
+    powerplayDetails: 'POWERPLAY (1-6)',
+    status: 'live',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function getAllDefaultMatches(): Match[] {
+  // Empty by default to let scorer add from beginning
+  return [];
+}
+
+export interface ArchivedMatchSummary {
+  id: string;
+  title: string;
+  format: string;
+  subTitle: string;
+  teams: string;
+  venue: string;
+  scores: string;
+  oversSummary: string;
+  resultBadge: string;
+  resultStatus: 'in_progress' | 'completed' | 'drawn';
+  summaryDetail: string;
+  date: string;
+  hasActiveSession?: boolean;
+}
+
+export const archivedMatchesList: ArchivedMatchSummary[] = [];
+

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600;700;800&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-fixed":"#6ffbbe","secondary-container":"#ee9800","primary-container":"#10b981","surface-container-low":"#161b29","on-secondary":"#472a00","on-secondary-container":"#5b3800","surface-container":"#1a1f2d","on-primary-fixed-variant":"#005236","error-container":"#93000a","error":"#ffb4ab","secondary-fixed":"#ffddb8","on-secondary-fixed":"#2a1700","surface-tint":"#4edea3","tertiary":"#ffb3ad","on-error":"#690005","primary-fixed-dim":"#4edea3","surface-container-lowest":"#080e1b","on-surface":"#dde2f5","on-surface-variant":"#bbcabf","surface-bright":"#333948","surface-dim":"#0d1320","secondary-fixed-dim":"#ffb95f","secondary":"#ffb95f","surface-container-highest":"#2f3543","inverse-surface":"#dde2f5","on-secondary-fixed-variant":"#653e00","on-background":"#dde2f5","on-error-container":"#ffdad6","tertiary-fixed-dim":"#ffb3ad","surface-variant":"#2f3543","background":"#0d1320","inverse-primary":"#006c49","outline-variant":"#3c4a42","tertiary-fixed":"#ffdad7","surface":"#0d1320","on-tertiary":"#68000a","primary":"#4edea3","inverse-on-surface":"#2a303f","on-tertiary-fixed":"#410004","surface-container-high":"#242a38","outline":"#86948a","on-primary-fixed":"#002113","on-tertiary-container":"#79000e","on-primary":"#003824","tertiary-container":"#ff7a73","on-tertiary-fixed-variant":"#930013","on-primary-container":"#00422b"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"1.5rem","space-md":"1rem","space-lg":"1.5rem","space-sm":"0.5rem","gutter":"1rem","space-xs":"0.25rem","space-xl":"2rem"},"fontFamily":{"stat-mono-lg":["JetBrains Mono"],"headline-md":["Outfit"],"label-caps":["JetBrains Mono"],"stat-mono-md":["JetBrains Mono"],"headline-sm":["Outfit"],"stat-mono-sm":["JetBrains Mono"],"display-hero":["Outfit"],"score-massive":["JetBrains Mono"],"body-md":["Inter"],"body-lg":["Inter"],"headline-lg":["Outfit"],"body-sm":["Inter"]},"fontSize":{"stat-mono-lg":["24px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"30px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"14px","letterSpacing":"0.08em","fontWeight":"600"}],"stat-mono-md":["16px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-sm":["18px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"stat-mono-sm":["13px",{"lineHeight":"16px","letterSpacing":"0em","fontWeight":"500"}],"display-hero":["48px",{"lineHeight":"52px","letterSpacing":"-0.03em","fontWeight":"700"}],"score-massive":["56px",{"lineHeight":"56px","letterSpacing":"-0.04em","fontWeight":"800"}],"body-md":["14px",{"lineHeight":"20px","letterSpacing":"0em","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}]}}}};</script></head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm border-b border-outline-variant/20 bg-surface-container-lowest"><img alt="CreaseHQ Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UtYJ4X_GrVDmieYZEPWPzLqqvbn9Pghfw3q76A7f9g9Oiv5QkBecVNzbMtSqHS9f0PyknUecMqB8gwb7jpZHfY8KqVtbz8nl5QZ0mUOlwntLEuuxypae-g3cD89I6cQ_cXSbhUhKtWbiATgkF2EtjarpydKHP3fV7THxT5wIfRnho2dNPYndHgjRdbdMuvn9lwfMpyRbSMhrSqVeorFmZ4MJm-C_8fRjp-rAyZ5k9wd2DuaTOlKgw7bj8"/><div class="flex flex-col ml-space-xs"><span class="font-headline-sm text-headline-sm text-primary leading-none tracking-tight">CreaseHQ</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">Match Center &amp; Analytics</span></div></div><div class="px-space-md py-space-sm"><span class="px-space-sm font-label-caps text-label-caps uppercase text-outline tracking-widest">Scoring Command</span></div><nav class="flex flex-col px-space-sm gap-space-xs" data-active-classes="bg-surface-container-high text-primary border-l-2 border-primary"><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">dashboard</span><span class="font-body-md text-body-md font-medium">Dashboard</span></a><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="new-match" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">add_circle</span><span class="font-body-md text-body-md font-medium">New Match</span></a><a aria-current="page" class="flex items-center justify-between px-space-md py-2.5 rounded-lg transition-colors group bg-surface-container-high text-primary border-l-2 border-primary" data-path="live-scoring" href="#"><div class="flex items-center"><span class="material-symbols-outlined text-[20px] mr-space-sm text-primary">sports_cricket</span><span class="font-body-md text-body-md font-medium">Live Scoring</span></div><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary-container/20 text-primary border border-primary/30 font-stat-mono-sm text-stat-mono-sm uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>LIVE</span></a><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="scorecards" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">table_chart</span><span class="font-body-md text-body-md font-medium">Scorecards</span></a><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">query_stats</span><span class="font-body-md text-body-md font-medium">Analytics</span></a><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">history</span><span class="font-body-md text-body-md font-medium">Match History</span></a><a class="flex items-center px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px] mr-space-sm">tune</span><span class="font-body-md text-body-md font-medium">Settings</span></a></nav></div><div class="p-space-md border-t border-outline-variant/30 bg-surface-container-low/60"><div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-primary/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDdOfKtXVn8sT3MDqiaSUEkXPVcTAARpCpvJ59XOOivbSwuwaBjl-oo5m4Jx7NQNA5F0L5ZzpPhjnAP3xEeuI1017pqbJuSGYp5fSCpMmgPwPqe1-7PWuk6SG4vXTknJXOlbA2fPz1WWvkXgoJ67ZjTKeF_WLLXgxzX9D2pwKp4FqSj0qXGmbRJidTmVfbb1VCQhWThCkFy_seK8fEShFThikmES-n1ccTAWNPbbQ86v8wAZdGkhMR"/><div class="flex flex-col"><span class="font-headline-sm text-body-sm font-semibold text-on-surface leading-tight">Alan Davies</span><span class="font-label-caps text-label-caps text-on-surface-variant">Lead Official Scorer</span></div></div><span class="material-symbols-outlined text-[18px] text-outline hover:text-on-surface cursor-pointer">verified_user</span></div><div class="mt-space-sm flex items-center justify-between px-space-xs"><span class="font-label-caps text-label-caps text-outline uppercase flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary-container"></span>Sync: Cloud Active</span><span class="font-stat-mono-sm text-stat-mono-sm text-primary font-semibold">14ms</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30 z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="flex items-center gap-space-md"><div class="inline-flex items-center gap-space-sm px-space-md py-1.5 rounded-lg bg-surface-container border border-outline-variant/30"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span class="font-stat-mono-sm text-stat-mono-sm font-medium text-on-surface tracking-tight">ENG vs AUS</span><span class="text-outline font-stat-mono-sm">•</span><span class="font-body-sm text-body-sm text-on-surface-variant">Lord's London</span><span class="text-outline font-stat-mono-sm">•</span><span class="font-label-caps text-label-caps text-secondary font-semibold uppercase">Men's T20 Tri-Series</span><span class="text-outline font-stat-mono-sm">•</span><span class="font-stat-mono-sm text-stat-mono-sm text-primary font-semibold">2nd Innings (Chasing 178)</span></div></div><div class="flex items-center gap-space-md"><div class="inline-flex items-center gap-space-md px-space-lg py-1.5 rounded-lg bg-surface-container-high border border-primary/30 shadow-[0_0_0_1px_rgba(16,185,129,0.15)]"><div class="flex items-center gap-space-xs"><span class="font-label-caps text-label-caps text-outline uppercase">Status</span><span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">Innings 2</span></div><span class="text-outline font-stat-mono-sm">|</span><div class="flex items-center gap-space-xs"><span class="font-label-caps text-label-caps text-outline uppercase">Over</span><span class="font-stat-mono-md text-stat-mono-md font-bold text-primary">16.4</span></div><span class="text-outline font-stat-mono-sm">|</span><div class="flex items-center gap-space-xs"><span class="font-label-caps text-label-caps text-outline uppercase">DLS Par</span><span class="font-stat-mono-md text-stat-mono-md font-bold text-secondary">142</span></div></div></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container border border-error/30 text-error hover:bg-error-container hover:text-on-error-container transition-colors font-stat-mono-sm text-stat-mono-sm" title="Undo Last Delivery (Ctrl+Z)" type="button"><span class="material-symbols-outlined text-[18px]">undo</span><span>Undo</span></button><button class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" type="button"><span class="material-symbols-outlined text-[18px]">menu_book</span><span>Rules</span></button><button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center" title="Fullscreen Mode" type="button"><span class="material-symbols-outlined text-[18px]">fullscreen</span></button><button class="relative p-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center" title="Notifications" type="button"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-lowest"></span></button></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden bg-surface text-on-surface select-none">
+<!-- Top Match Status Header Strip -->
+<header class="w-full bg-surface-container-lowest px-space-md py-2 flex items-center justify-between gap-space-md shrink-0 shadow-md">
+<!-- Match Info & Badges -->
+<div class="flex items-center gap-space-md min-w-0">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-stat-mono-sm text-stat-mono-sm">2nd T20I</span>
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">ENG vs AUS</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Lord's, London</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-ping"></span>CHASE IN PROGRESS
+          </span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-secondary font-label-caps text-label-caps">POWERPLAY 3 (16-20)</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DLS PAR: 142</span>
+</div>
+</div>
+</div>
+<!-- Massive Score & Rates -->
+<div class="flex items-center gap-space-lg bg-surface-container-low px-space-md py-1 rounded-xl">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface-variant">ENG</span>
+<span class="font-stat-mono-lg text-[38px] leading-none font-bold text-on-surface tracking-tight">156<span class="text-error font-medium">/4</span></span>
+</div>
+<div class="flex flex-col justify-center">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">OVERS</span>
+<span class="font-stat-mono-md text-stat-mono-md text-primary font-bold">17.3 <span class="text-on-surface-variant font-normal">/ 20</span></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">CRR</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface font-semibold">8.91</span>
+</div>
+</div>
+</div>
+<!-- Chase Telemetry HUD -->
+<div class="flex items-center gap-space-md bg-surface-container-high px-space-md py-1.5 rounded-xl shadow-inner">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary-fixed uppercase">TARGET 178</span>
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">NEED <span class="text-secondary">22</span> OFF <span class="text-primary">15b</span></span>
+</div>
+<div class="h-8 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">RRR</span>
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-secondary">8.80</span>
+</div>
+<!-- Progress Bar Visual Target -->
+<div class="w-24 flex flex-col gap-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-300" style="width: 87.6%"></div>
+</div>
+<span class="font-stat-mono-sm text-[10px] text-right text-on-surface-variant leading-none">87.6% REQ</span>
+</div>
+</div>
+</header>
+<!-- Main 3-Column Cockpit Workspace -->
+<main class="grid grid-cols-12 gap-space-sm p-space-sm flex-1 min-h-0 w-full overflow-hidden">
+<!-- LEFT COLUMN: Batting Metrics & Wagon Wheel -->
+<section class="col-span-3 flex flex-col gap-space-sm min-h-0 h-full">
+<!-- Active Batters Table Panel -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs shadow-sm">
+<div class="flex items-center justify-between px-space-xs pb-1">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">sports_cricket</span>
+            Batter in Middle
+          </span>
+<span class="font-label-caps text-label-caps text-primary cursor-pointer hover:underline" onclick="swapStrike()">Swap Strike (X)</span>
+</div>
+<!-- Striker Row (Livingstone) -->
+<div class="bg-surface-container-high rounded-lg p-space-sm relative overflow-hidden transition-all duration-150" id="striker-card">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 pl-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-headline-sm text-body-md font-bold text-on-surface">L. Livingstone</span>
+<span class="px-1 py-0.2 rounded bg-primary-container text-on-primary-container font-label-caps text-[9px] uppercase tracking-wide">Strike</span>
+</div>
+<span class="font-stat-mono-md text-stat-mono-md font-extrabold text-primary">42<span class="text-[12px] font-normal">*</span></span>
+</div>
+<div class="grid grid-cols-5 gap-1 mt-2 pt-1 bg-surface-container-lowest/50 rounded px-2 text-center">
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Balls</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface">24</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">4s</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-secondary">3</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">6s</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-primary">2</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">SR</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface">175.0</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Dots</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface-variant">7</div>
+</div>
+</div>
+</div>
+<!-- Non-Striker Row (Curran) -->
+<div class="bg-surface-container rounded-lg p-space-sm pl-2.5" id="nonstriker-card">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">S. Curran</span>
+</div>
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">14<span class="text-[12px] font-normal text-on-surface-variant">*</span></span>
+</div>
+<div class="grid grid-cols-5 gap-1 mt-2 pt-1 bg-surface-container-lowest/40 rounded px-2 text-center">
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Balls</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface">9</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">4s</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-secondary">1</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">6s</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface-variant">0</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">SR</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface">155.6</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Dots</div>
+<div class="font-stat-mono-sm text-stat-mono-sm text-on-surface-variant">3</div>
+</div>
+</div>
+</div>
+<!-- Partnership Metric Capsule -->
+<div class="bg-surface-container-lowest p-2 rounded-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">5th Wkt Partnership</span>
+<span class="font-stat-mono-sm text-stat-mono-sm font-semibold text-on-surface">34 runs <span class="text-on-surface-variant font-normal">(18b)</span></span>
+</div>
+<div class="flex items-center gap-1 font-label-caps text-[10px] text-on-surface-variant">
+<span>Liv 20(9)</span>
+<span>•</span>
+<span>Cur 14(9)</span>
+</div>
+</div>
+</div>
+<!-- Wagon Wheel & Pitch Zone Telemetry -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex-1 min-h-0 flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">scatter_plot</span>
+            Wagon Wheel &amp; Pitch Map
+          </span>
+<div class="flex bg-surface-container-lowest rounded p-0.5">
+<button class="px-2 py-0.5 text-[10px] font-label-caps rounded bg-surface-container-high text-primary uppercase">Livingstone</button>
+<button class="px-2 py-0.5 text-[10px] font-label-caps rounded text-on-surface-variant uppercase hover:text-on-surface">Innings</button>
+</div>
+</div>
+<!-- Wagon Wheel Interactive Canvas Representation -->
+<div class="relative w-full aspect-square max-h-[160px] mx-auto flex items-center justify-center bg-surface-container-lowest rounded-full overflow-hidden">
+<!-- Cricket Pitch Field Rings (SVG) -->
+<svg class="w-full h-full p-1" viewbox="0 0 200 200">
+<!-- Boundary Oval -->
+<ellipse class="text-surface-container-highest" cx="100" cy="100" fill="none" rx="94" ry="94" stroke="currentColor" stroke-dasharray="2 3" stroke-width="1"></ellipse>
+<!-- 30-yard Circle -->
+<circle class="text-surface-container-high" cx="100" cy="100" fill="none" r="50" stroke="currentColor" stroke-width="1"></circle>
+<!-- Pitch Rectangle -->
+<rect class="text-surface-container-highest" fill="currentColor" height="50" rx="1" width="12" x="94" y="75"></rect>
+<!-- Wagon Shots Vectors for Livingstone -->
+<!-- Shot 1: Six over long on -->
+<line class="text-primary" stroke="currentColor" stroke-width="2" x1="100" x2="165" y1="100" y2="35"></line>
+<circle class="text-primary" cx="165" cy="35" fill="currentColor" r="3"></circle>
+<!-- Shot 2: Four cover drive -->
+<line class="text-secondary" stroke="currentColor" stroke-width="2" x1="100" x2="32" y1="100" y2="80"></line>
+<circle class="text-secondary" cx="32" cy="80" fill="currentColor" r="2.5"></circle>
+<!-- Shot 3: Four pull midwicket -->
+<line class="text-secondary" stroke="currentColor" stroke-width="2" x1="100" x2="175" y1="100" y2="115"></line>
+<circle class="text-secondary" cx="175" cy="115" fill="currentColor" r="2.5"></circle>
+<!-- Shot 4: Single fine leg -->
+<line class="text-on-surface-variant" stroke="currentColor" stroke-width="1.5" x1="100" x2="140" y1="100" y2="170"></line>
+<!-- Shot 5: Six straight -->
+<line class="text-primary" stroke="currentColor" stroke-width="2.5" x1="100" x2="100" y1="100" y2="10"></line>
+<circle class="text-primary" cx="100" cy="10" fill="currentColor" r="3"></circle>
+<!-- Batter Dot -->
+<circle class="text-primary" cx="100" cy="100" fill="currentColor" r="3.5"></circle>
+</svg>
+<div class="absolute bottom-1 right-2 text-right">
+<span class="font-stat-mono-sm text-[10px] text-primary block leading-none">2 x 6s</span>
+<span class="font-stat-mono-sm text-[10px] text-secondary block leading-none mt-0.5">3 x 4s</span>
+</div>
+</div>
+<!-- Last Dismissal Card -->
+<div class="bg-surface-container rounded-lg p-space-xs flex items-center justify-between">
+<div class="flex items-center gap-1.5 overflow-hidden">
+<span class="px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-caps text-[9px] uppercase font-bold shrink-0">WKT</span>
+<div class="truncate">
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface truncate block">H. Brook c Maxwell b Starc 28</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant block">19b (3x4, 1x6) • FOW: 122/4 (14.5 ov)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">info</span>
+</div>
+</div>
+</section>
+<!-- CENTER COLUMN: Live Scoring Keypad & Over Timeline (PRIMARY DECK) -->
+<section class="col-span-6 flex flex-col gap-space-sm min-h-0 h-full">
+<!-- Current Over Delivery Reel Tracker Strip -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-1.5 shadow-sm shrink-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps uppercase text-primary font-bold">OVER 18 (STARC TO LIVINGSTONE)</span>
+<span class="text-on-surface-variant font-label-caps text-label-caps">•</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface">8 Runs Conceded</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Ball 4 of 6</span>
+</div>
+<!-- Over Timeline Badges Reel -->
+<div class="grid grid-cols-6 gap-2 pt-1">
+<!-- Ball 1: Single -->
+<div class="bg-surface-container-high rounded-lg p-1.5 flex flex-col items-center justify-center text-center">
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">17.1</span>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center my-0.5">
+<span class="font-stat-mono-md text-stat-mono-md text-primary font-bold">1</span>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant truncate w-full">Curran</span>
+</div>
+<!-- Ball 2: Boundary Four -->
+<div class="bg-surface-container-high rounded-lg p-1.5 flex flex-col items-center justify-center text-center">
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">17.2</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center my-0.5 shadow-sm">
+<span class="font-stat-mono-md text-stat-mono-md font-extrabold text-on-secondary">4</span>
+</div>
+<span class="font-label-caps text-[9px] text-secondary truncate w-full">Liv (4)</span>
+</div>
+<!-- Ball 3: Dot Ball -->
+<div class="bg-surface-container-high rounded-lg p-1.5 flex flex-col items-center justify-center text-center">
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">17.3</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center my-0.5">
+<span class="font-stat-mono-md text-stat-mono-md text-on-surface-variant font-bold">•</span>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant truncate w-full">Dot</span>
+</div>
+<!-- Ball 4: Wide (+1) -->
+<div class="bg-surface-container-high rounded-lg p-1.5 flex flex-col items-center justify-center text-center">
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">Wd</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant text-tertiary flex items-center justify-center my-0.5">
+<span class="font-stat-mono-md text-stat-mono-sm font-bold">Wd+1</span>
+</div>
+<span class="font-label-caps text-[9px] text-tertiary truncate w-full">Wide Extra</span>
+</div>
+<!-- Ball 5: Two runs -->
+<div class="bg-surface-container-high rounded-lg p-1.5 flex flex-col items-center justify-center text-center">
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">17.4</span>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center my-0.5">
+<span class="font-stat-mono-md text-stat-mono-md text-on-surface font-bold">2</span>
+</div>
+<span class="font-label-caps text-[9px] text-on-surface-variant truncate w-full">Liv (2)</span>
+</div>
+<!-- Ball 6: Current In-Flight Delivery Input -->
+<div class="bg-surface-container-highest rounded-lg p-1.5 flex flex-col items-center justify-center text-center relative overflow-hidden animate-pulse">
+<div class="absolute inset-0 bg-primary/5"></div>
+<span class="font-stat-mono-sm text-[10px] text-primary font-bold">17.5</span>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center my-0.5">
+<span class="material-symbols-outlined text-[18px]">radio_button_checked</span>
+</div>
+<span class="font-label-caps text-[9px] text-primary font-bold uppercase truncate w-full">Awaiting</span>
+</div>
+</div>
+</div>
+<!-- High-Intensity Scoring Keypad Engine -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex-1 flex flex-col justify-between shadow-lg">
+<!-- Scoring Keypad Banner Indicator -->
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-body-md font-semibold text-on-surface">Record Ball Output</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Keypad Hotkeys: [0-6] Runs | [W] Wicket | [E] Extras</span>
+</div>
+<span class="font-stat-mono-sm text-stat-mono-sm px-2 py-0.5 rounded bg-surface-container text-primary font-bold">Fast-Input Mode</span>
+</div>
+<!-- 6 Main Big Target Buttons -->
+<div class="grid grid-cols-3 gap-space-sm flex-1 my-1">
+<!-- 0 Dot Ball -->
+<button class="group flex flex-col items-center justify-center bg-surface-container hover:bg-surface-container-high rounded-xl p-space-md transition-all active:scale-[0.98] shadow-sm" onclick="recordRun(0)" type="button">
+<span class="font-stat-mono-lg text-[40px] leading-none text-on-surface font-extrabold group-hover:text-primary transition-colors">0</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Dot Ball [0]</span>
+</button>
+<!-- 1 Run -->
+<button class="group flex flex-col items-center justify-center bg-surface-container hover:bg-surface-container-high rounded-xl p-space-md transition-all active:scale-[0.98] shadow-sm" onclick="recordRun(1)" type="button">
+<span class="font-stat-mono-lg text-[40px] leading-none text-on-surface font-extrabold group-hover:text-primary transition-colors">1</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Single [1]</span>
+</button>
+<!-- 2 Runs -->
+<button class="group flex flex-col items-center justify-center bg-surface-container hover:bg-surface-container-high rounded-xl p-space-md transition-all active:scale-[0.98] shadow-sm" onclick="recordRun(2)" type="button">
+<span class="font-stat-mono-lg text-[40px] leading-none text-on-surface font-extrabold group-hover:text-primary transition-colors">2</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Two Runs [2]</span>
+</button>
+<!-- 3 Runs -->
+<button class="group flex flex-col items-center justify-center bg-surface-container hover:bg-surface-container-high rounded-xl p-space-md transition-all active:scale-[0.98] shadow-sm" onclick="recordRun(3)" type="button">
+<span class="font-stat-mono-lg text-[40px] leading-none text-on-surface font-extrabold group-hover:text-primary transition-colors">3</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Three Runs [3]</span>
+</button>
+<!-- 4 Boundary Four (Amber Theme) -->
+<button class="group flex flex-col items-center justify-center bg-surface-container-high hover:bg-secondary-container rounded-xl p-space-md transition-all active:scale-[0.98] shadow-md" onclick="recordRun(4)" type="button">
+<span class="font-stat-mono-lg text-[44px] leading-none text-secondary font-black group-hover:text-on-secondary-container transition-colors">4</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-caps text-label-caps text-secondary uppercase font-bold group-hover:text-on-secondary-container">Boundary Four [4]</span>
+</div>
+</button>
+<!-- 6 Maximum Six (Emerald High-Energy Theme) -->
+<button class="group flex flex-col items-center justify-center bg-primary-container/20 hover:bg-primary-container rounded-xl p-space-md transition-all active:scale-[0.98] shadow-md" onclick="recordRun(6)" type="button">
+<span class="font-stat-mono-lg text-[44px] leading-none text-primary font-black group-hover:text-on-primary-container transition-colors">6</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-caps text-label-caps text-primary uppercase font-bold group-hover:text-on-primary-container">Maximum Six [6]</span>
+</div>
+</button>
+</div>
+<!-- Secondary Operational Triggers Grid (Extras, Wickets, Penalty, Bowler) -->
+<div class="grid grid-cols-4 gap-2 pt-2">
+<!-- Extras Launcher Button -->
+<button class="flex items-center justify-center gap-2 py-3 px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-tertiary transition-all active:scale-95 shadow-sm" onclick="toggleModal('extras-modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">add_moderator</span>
+<div class="text-left">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold block leading-tight">EXTRAS</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">Wd, Nb, B, Lb</span>
+</div>
+</button>
+<!-- Wicket Modal Launcher Button (Crimson) -->
+<button class="flex items-center justify-center gap-2 py-3 px-space-sm rounded-lg bg-error-container hover:bg-error text-on-error-container hover:text-on-error transition-all active:scale-95 shadow-md" onclick="toggleModal('wicket-modal')" type="button">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+<div class="text-left">
+<span class="font-headline-sm text-stat-mono-md font-extrabold block leading-tight">WICKET</span>
+<span class="font-label-caps text-[9px] uppercase tracking-wider block">Dismissal [W]</span>
+</div>
+</button>
+<!-- End Over / Change Bowler -->
+<button class="flex items-center justify-center gap-2 py-3 px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-all active:scale-95 shadow-sm" onclick="endOverManual()" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">sync_alt</span>
+<div class="text-left">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold block leading-tight">OVER END</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">New Bowler</span>
+</div>
+</button>
+<!-- Penalty Runs Adjustment -->
+<button class="flex items-center justify-center gap-2 py-3 px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary transition-all active:scale-95 shadow-sm" onclick="toggleModal('penalty-modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">exposure</span>
+<div class="text-left">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold block leading-tight">PENALTY</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">+5 / -5 Runs</span>
+</div>
+</button>
+</div>
+</div>
+</section>
+<!-- RIGHT COLUMN: Bowling Figures, Selector & Match Feed -->
+<section class="col-span-3 flex flex-col gap-space-sm min-h-0 h-full">
+<!-- Current Bowler Card (Starc) -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex flex-col gap-space-xs shadow-sm">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">sports_baseball</span>
+            Active Bowler
+          </span>
+<span class="font-stat-mono-sm text-[11px] text-secondary font-bold">SPELL: 3.3 / 4.0 ov</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-space-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-stat-mono-sm text-xs font-bold text-primary">MS</div>
+<div>
+<span class="font-headline-sm text-body-md font-bold text-on-surface block leading-tight">M. Starc</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant block">Left-arm fast (Pavilion End)</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-stat-mono-md text-stat-mono-md font-extrabold text-error">2<span class="text-on-surface-variant font-normal">/</span>31</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">Wkts / Runs</span>
+</div>
+</div>
+<!-- Tabular Figures -->
+<div class="grid grid-cols-5 gap-1 bg-surface-container-lowest/60 rounded p-1.5 text-center">
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">O</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface font-semibold">3.3</span>
+</div>
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">M</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface">0</span>
+</div>
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">R</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-on-surface">31</span>
+</div>
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">W</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-error font-bold">2</span>
+</div>
+<div>
+<span class="font-label-caps text-[9px] text-on-surface-variant block uppercase">ECON</span>
+<span class="font-stat-mono-sm text-stat-mono-sm text-primary font-bold">8.86</span>
+</div>
+</div>
+<!-- Extras breakdown bar -->
+<div class="flex items-center justify-between px-1 text-[11px] font-stat-mono-sm text-on-surface-variant">
+<span>Discipline: 1 Wd, 0 Nb</span>
+<span class="text-primary">3 Balls Remain</span>
+</div>
+</div>
+<!-- Next Bowler Selector Dropdown -->
+<div class="flex flex-col gap-1 mt-1">
+<label class="font-label-caps text-[10px] text-on-surface-variant uppercase">Designate Next Bowler (Over 19)</label>
+<div class="relative">
+<select class="w-full bg-surface-container text-on-surface font-stat-mono-sm text-stat-mono-sm rounded-lg px-2.5 py-1.5 appearance-none focus:outline-none focus:bg-surface-container-high transition-colors cursor-pointer">
+<option value="cummins">P. Cummins (4.0-0-34-1) - Done</option>
+<option selected="" value="hazlewood">J. Hazlewood (3.0-0-21-0) - 1.0 Ov left</option>
+<option value="zampa">A. Zampa (4.0-0-38-1) - Done</option>
+<option value="green">C. Green (1.0-0-12-0) - 3.0 Ov left</option>
+<option value="maxwell">G. Maxwell (1.0-0-11-0) - 3.0 Ov left</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[16px] pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Over-By-Over Log Feed (Scrollable Mini Strip) -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex-1 min-h-0 flex flex-col gap-space-xs shadow-sm">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">history</span>
+            Over-by-Over Reel
+          </span>
+<span class="font-stat-mono-sm text-[10px] text-on-surface-variant">Last 4 Overs</span>
+</div>
+<!-- Over Log Cards -->
+<div class="flex flex-col gap-1.5 overflow-y-auto pr-1 flex-1">
+<!-- Over 17 (Cummins) -->
+<div class="bg-surface-container rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">Ov 17</span>
+<div class="flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">2</span>
+<span class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-stat-mono-sm flex items-center justify-center font-bold">4</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">2</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold text-primary block leading-none">11 runs</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">P. Cummins</span>
+</div>
+</div>
+<!-- Over 16 (Hazlewood) -->
+<div class="bg-surface-container rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">Ov 16</span>
+<div class="flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">0</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">0</span>
+<span class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-stat-mono-sm flex items-center justify-center font-bold">4</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold text-on-surface block leading-none">7 runs</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">J. Hazlewood</span>
+</div>
+</div>
+<!-- Over 15 (Starc - Wicket) -->
+<div class="bg-surface-container rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface">Ov 15</span>
+<div class="flex items-center gap-1">
+<span class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-stat-mono-sm flex items-center justify-center font-bold">4</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">2</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">0</span>
+<span class="w-5 h-5 rounded-full bg-error-container text-on-error-container text-[10px] font-stat-mono-sm flex items-center justify-center font-bold">W</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-[10px] font-stat-mono-sm flex items-center justify-center">1</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-stat-mono-sm text-stat-mono-sm font-bold text-error block leading-none">8r • 1w</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">M. Starc</span>
+</div>
+</div>
+</div>
+<!-- Automated Commentary Live Teletype -->
+<div class="bg-surface-container-lowest p-2 rounded-lg flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">terminal</span>
+<div class="text-[11px] font-body-sm leading-tight text-on-surface-variant">
+<span class="font-stat-mono-sm text-on-surface font-semibold">17.3:</span> Starc spears a 144kph yorker on middle stump; Livingstone jams it out to midwicket for a couple of runs. Smart running.
+          </div>
+</div>
+</div>
+</section>
+</main>
+<!-- ======================================================== -->
+<!-- MODAL 1: EXTRAS CONFIGURATION DIALOG (Overlay Preview)  -->
+<!-- ======================================================== -->
+<div class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="extras-modal">
+<div class="bg-surface-container-low rounded-2xl w-full max-w-lg p-space-lg shadow-2xl flex flex-col gap-space-md">
+<!-- Modal Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[24px] text-tertiary">add_moderator</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Record Extra Delivery</h3>
+</div>
+<button class="p-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" onclick="toggleModal('extras-modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Extras Type Selector Tabs -->
+<div class="grid grid-cols-4 gap-2">
+<button class="py-2.5 rounded-lg bg-surface-container-high text-primary font-stat-mono-sm text-stat-mono-sm font-bold text-center" type="button">WIDE (Wd)</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-sm text-stat-mono-sm font-semibold text-center" type="button">NO-BALL (Nb)</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-sm text-stat-mono-sm font-semibold text-center" type="button">LEG-BYE (Lb)</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-sm text-stat-mono-sm font-semibold text-center" type="button">BYE (B)</button>
+</div>
+<!-- Additional Runs Scored with the Extra -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Additional Runs Completed</span>
+<div class="grid grid-cols-5 gap-2">
+<button class="py-3 rounded-lg bg-surface-container-high text-primary font-stat-mono-md text-stat-mono-md font-bold" type="button">+0 Runs</button>
+<button class="py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-md text-stat-mono-md font-bold" type="button">+1 Run</button>
+<button class="py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-md text-stat-mono-md font-bold" type="button">+2 Runs</button>
+<button class="py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-stat-mono-md text-stat-mono-md font-bold" type="button">+3 Runs</button>
+<button class="py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary font-stat-mono-md text-stat-mono-md font-bold" type="button">+4 (Boundary)</button>
+</div>
+</div>
+<!-- Action Confirmation Row -->
+<div class="flex items-center justify-end gap-space-sm pt-2">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-on-surface-variant font-body-md text-body-md hover:text-on-surface" onclick="toggleModal('extras-modal')" type="button">Cancel</button>
+<button class="px-space-lg py-2 rounded-lg bg-primary-container text-on-primary-container font-stat-mono-sm text-stat-mono-sm font-bold shadow-md hover:brightness-110" onclick="toggleModal('extras-modal')" type="button">Confirm Wide (+1 Run)</button>
+</div>
+</div>
+</div>
+<!-- ======================================================== -->
+<!-- MODAL 2: WICKET / DISMISSAL DIALOG (Overlay Preview)     -->
+<!-- ======================================================== -->
+<div class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="wicket-modal">
+<div class="bg-surface-container-low rounded-2xl w-full max-w-xl p-space-lg shadow-2xl flex flex-col gap-space-md">
+<!-- Modal Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[26px] text-error">gavel</span>
+<h3 class="font-headline-md text-headline-md text-error">Record Dismissal (Wicket)</h3>
+</div>
+<button class="p-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" onclick="toggleModal('wicket-modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Dismissed Batter Selection -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Dismissed Batter</span>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container-high rounded-xl p-space-sm flex items-center justify-between cursor-pointer">
+<div>
+<span class="font-stat-mono-md text-stat-mono-md font-bold text-on-surface block">L. Livingstone</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant block">Striker • 42 runs (24b)</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+</div>
+<div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between cursor-pointer hover:bg-surface-container-high">
+<div>
+<span class="font-stat-mono-md text-stat-mono-md font-semibold text-on-surface block">S. Curran</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant block">Non-Striker • 14 runs (9b)</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">radio_button_unchecked</span>
+</div>
+</div>
+</div>
+<!-- 10 Official Cricket Dismissal Methods -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Method of Dismissal</span>
+<div class="grid grid-cols-5 gap-2">
+<button class="py-2.5 rounded-lg bg-error-container text-on-error-container font-label-caps text-label-caps font-bold" type="button">CAUGHT</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">BOWLED</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">LBW</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">RUN OUT</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">STUMPED</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">HIT WICKET</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">OBSTRUCTING</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">HANDLED BALL</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">HIT TWICE</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps" type="button">TIMED OUT</button>
+</div>
+</div>
+<!-- Fielder Assist Selector -->
+<div class="flex items-center gap-space-md bg-surface-container p-space-sm rounded-xl">
+<div class="flex-1 flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-on-surface-variant uppercase">Fielder (Catch / Assist)</label>
+<select class="bg-surface-container-lowest text-on-surface font-stat-mono-sm text-stat-mono-sm rounded px-2 py-1.5 focus:outline-none">
+<option>Glenn Maxwell (Deep Midwicket)</option>
+<option>Matthew Wade (Wicketkeeper)</option>
+<option>David Warner (Long-on)</option>
+<option>Steve Smith (Cover)</option>
+<option>Bowler (Caught &amp; Bowled)</option>
+</select>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-on-surface-variant uppercase">Next Incoming Batter</label>
+<select class="bg-surface-container-lowest text-on-surface font-stat-mono-sm text-stat-mono-sm rounded px-2 py-1.5 focus:outline-none">
+<option>Chris Jordan (RHB)</option>
+<option>Adil Rashid (RHB)</option>
+<option>Jofra Archer (RHB)</option>
+<option>Reece Topley (LHB)</option>
+</select>
+</div>
+</div>
+<!-- Action Confirmation Row -->
+<div class="flex items-center justify-end gap-space-sm pt-2">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-on-surface-variant font-body-md text-body-md hover:text-on-surface" onclick="toggleModal('wicket-modal')" type="button">Cancel</button>
+<button class="px-space-lg py-2 rounded-lg bg-error-container text-on-error-container font-stat-mono-sm text-stat-mono-sm font-bold shadow-md hover:bg-error hover:text-on-error" onclick="toggleModal('wicket-modal')" type="button">Confirm Out (Caught Maxwell)</button>
+</div>
+</div>
+</div>
+<!-- ======================================================== -->
+<!-- MODAL 3: PENALTY RUNS DIALOG                             -->
+<!-- ======================================================== -->
+<div class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="penalty-modal">
+<div class="bg-surface-container-low rounded-2xl w-full max-w-md p-space-lg shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-secondary">Award Penalty Runs</h3>
+<button class="p-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant" onclick="toggleModal('penalty-modal')" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="p-4 rounded-xl bg-surface-container-high hover:bg-secondary-container text-secondary hover:text-on-secondary-container flex flex-col items-center gap-1 transition-all" onclick="toggleModal('penalty-modal')" type="button">
+<span class="font-stat-mono-lg text-stat-mono-lg font-bold">+5 Runs</span>
+<span class="font-label-caps text-label-caps uppercase">Award to Batting Team</span>
+</button>
+<button class="p-4 rounded-xl bg-surface-container-high hover:bg-error-container text-error hover:text-on-error-container flex flex-col items-center gap-1 transition-all" onclick="toggleModal('penalty-modal')" type="button">
+<span class="font-stat-mono-lg text-stat-mono-lg font-bold">+5 Runs</span>
+<span class="font-label-caps text-label-caps uppercase">Award to Bowling Team</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Inline Micro-Interaction Controller -->
+<script>
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        if (modal.classList.contains('hidden')) {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        } else {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+      }
+    }
+
+    function recordRun(runs) {
+      // Trigger tactile micro-feedback
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-4 right-4 bg-primary-container text-on-primary-container font-stat-mono-sm text-stat-mono-sm px-4 py-2 rounded-lg shadow-lg z-50 transition-opacity duration-300';
+      toast.textContent = `Recorded: ${runs} run(s) off ball 17.4`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 1400);
+    }
+
+    function swapStrike() {
+      const striker = document.getElementById('striker-card');
+      const nonStriker = document.getElementById('nonstriker-card');
+      if (striker && nonStriker) {
+        striker.classList.add('scale-[0.98]');
+        setTimeout(() => striker.classList.remove('scale-[0.98]'), 150);
+      }
+    }
+
+    function endOverManual() {
+      alert("Over 18 Completed! Rotating pitch ends and updating bowler spell limits.");
+    }
+
+    // Keyboard Hotkey Listener for Match Scorer
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (['0', '1', '2', '3', '4', '6'].includes(e.key)) {
+        recordRun(parseInt(e.key));
+      } else if (e.key.toLowerCase() === 'w') {
+        toggleModal('wicket-modal');
+      } else if (e.key.toLowerCase() === 'e') {
+        toggleModal('extras-modal');
+      } else if (e.key.toLowerCase() === 'x') {
+        swapStrike();
+      }
+    });
+  </script>
+</div></main></div></body></html>
