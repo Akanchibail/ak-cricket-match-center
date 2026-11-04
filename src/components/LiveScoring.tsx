@@ -11,6 +11,7 @@ import { WicketModal } from './modals/WicketModal';
 import { PenaltyModal } from './modals/PenaltyModal';
 import { BowlerChangeModal } from './modals/BowlerChangeModal';
 import { getMaxOversPerBowler, isBowlerEligible } from '../engine/cricketEngine';
+import { calculateMatchLiveDLS } from '../engine/dlsEngine';
 
 interface LiveScoringProps {
   match: Match;
@@ -43,6 +44,7 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
   const isChasing = match.currentInningsIndex === 1 && match.target !== null;
   const ballsPerOver = match.ballsPerOver || 6;
   const maxOvers = getMaxOversPerBowler(match.format, match.totalOvers);
+  const liveDls = isChasing ? calculateMatchLiveDLS(match) : null;
 
   // Auto-prompt bowler selection when an over completes and currentBowlerId is empty
   useEffect(() => {
@@ -224,9 +226,33 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
               <span className="px-1.5 py-0.5 rounded bg-[#1a1f2d] text-[#ffb95f] font-label-caps text-[10px] font-semibold">
                 {match.powerplayDetails || 'POWERPLAY (1-6)'}
               </span>
-              <span className="font-label-caps text-[10px] text-[#bbcabf]">
-                DLS PAR: {match.dlsPar || 142}
-              </span>
+              {liveDls ? (
+                <div className="flex items-center gap-1.5">
+                  <span className="font-stat-mono-sm text-[10px] px-2 py-0.5 rounded bg-[#1a1f2d] text-[#ffb95f] font-bold border border-[#ffb95f]/30">
+                    DLS PAR: {liveDls.parScore}
+                  </span>
+                  <span
+                    className={`font-stat-mono-sm text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                      liveDls.status === 'ahead'
+                        ? 'bg-[#10b981]/20 text-[#4edea3] border border-[#10b981]/30'
+                        : liveDls.status === 'behind'
+                        ? 'bg-[#93000a]/20 text-[#ffb4ab] border border-[#ffb4ab]/30'
+                        : 'bg-[#ee9800]/20 text-[#ffb95f] border border-[#ee9800]/30'
+                    }`}
+                    title={liveDls.statusDescription}
+                  >
+                    {liveDls.status === 'ahead'
+                      ? `+${liveDls.runDifferential} ahead`
+                      : liveDls.status === 'behind'
+                      ? `${liveDls.runDifferential} behind`
+                      : 'Par level'}
+                  </span>
+                </div>
+              ) : (
+                <span className="font-label-caps text-[10px] text-[#bbcabf]">
+                  DLS PAR: {match.dlsPar || 142}
+                </span>
+              )}
             </div>
           </div>
         </div>

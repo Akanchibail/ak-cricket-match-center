@@ -4,9 +4,10 @@
  */
 
 import React, { useState } from 'react';
-import { Sliders, CheckCircle2, Play, RefreshCw, Calculator, Database, ShieldAlert, Award } from 'lucide-react';
+import { Sliders, CheckCircle2, Play, RefreshCw, Calculator, Database, ShieldAlert, Award, TrendingUp, TrendingDown, Minus, Info, Sparkles } from 'lucide-react';
 import { recordDelivery, undoLastDelivery } from '../engine/cricketEngine';
 import { createDefaultMatch } from '../engine/defaultData';
+import { calculateDLS, DLSResult } from '../engine/dlsEngine';
 import { Match, DeliveryInput } from '../types/cricket';
 
 interface SettingsProps {
@@ -28,19 +29,52 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
   const [resetFeedback, setResetFeedback] = useState<string | null>(null);
   const [activeConfirm, setActiveConfirm] = useState<'match' | 'all' | null>(null);
 
-  // DLS Calculator state
-  const [dlsOversLeft, setDlsOversLeft] = useState<number>(10);
-  const [dlsWicketsLost, setDlsWicketsLost] = useState<number>(3);
-  const [dlsFirstInningsTotal, setDlsFirstInningsTotal] = useState<number>(178);
-  const [calculatedPar, setCalculatedPar] = useState<number | null>(null);
+  // Duckworth-Lewis-Stern Calculator state (initialized with 50-ov user scenario: 186 total, 10.5 ov, 54/1)
+  const [dlsTotalOvers, setDlsTotalOvers] = useState<number>(50);
+  const [dlsFirstInningsTotal, setDlsFirstInningsTotal] = useState<number>(186);
+  const [dlsFirstInningsOvers, setDlsFirstInningsOvers] = useState<string>('50.0');
+  const [dlsTeam2OversBatted, setDlsTeam2OversBatted] = useState<string>('10.5');
+  const [dlsWicketsLost, setDlsWicketsLost] = useState<number>(1);
+  const [dlsTeam2CurrentRuns, setDlsTeam2CurrentRuns] = useState<number>(54);
+  const [dlsResult, setDlsResult] = useState<DLSResult>(() =>
+    calculateDLS({
+      totalOvers: 50,
+      team1TotalRuns: 186,
+      team1OversFaced: '50.0',
+      team2OversBatted: '10.5',
+      team2WicketsLost: 1,
+      team2CurrentRuns: 54,
+    })
+  );
+
+  const updateDLS = (
+    totalOvers: number,
+    t1Total: number,
+    t1Overs: string,
+    t2Overs: string,
+    t2Wickets: number,
+    t2Runs: number
+  ) => {
+    const res = calculateDLS({
+      totalOvers,
+      team1TotalRuns: t1Total,
+      team1OversFaced: t1Overs,
+      team2OversBatted: t2Overs,
+      team2WicketsLost: t2Wickets,
+      team2CurrentRuns: t2Runs,
+    });
+    setDlsResult(res);
+  };
 
   const calculateDLSPar = () => {
-    // Standard DLS Standard edition resource approximation formula:
-    // Resources R(u, w) = R0(w) * (1 - exp(-b*u))
-    const totalResources = 100;
-    const resourcesRemaining = Math.max(0, (dlsOversLeft / 20) * (1 - dlsWicketsLost * 0.08) * 100);
-    const par = Math.round(dlsFirstInningsTotal * ((100 - resourcesRemaining) / 100) + 1);
-    setCalculatedPar(Math.max(1, par));
+    updateDLS(
+      dlsTotalOvers,
+      dlsFirstInningsTotal,
+      dlsFirstInningsOvers,
+      dlsTeam2OversBatted,
+      dlsWicketsLost,
+      dlsTeam2CurrentRuns
+    );
   };
 
   // Run in-browser automated test suite
@@ -396,70 +430,302 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
           )}
         </div>
 
-        {/* Section 2: DLS Par Score Calculator */}
-        <div className="bg-[#161b29] rounded-xl p-5 border border-[#3c4a42]/30 space-y-4 shadow-md">
-          <div className="flex items-center gap-2 pb-2 border-b border-[#3c4a42]/20">
-            <Calculator className="w-5 h-5 text-[#ffb95f]" />
-            <h2 className="font-headline-sm text-base font-bold text-[#dde2f5]">
-              Duckworth-Lewis-Stern (DLS) Par Calculator
-            </h2>
+        {/* Section 2: Duckworth-Lewis-Stern (DLS) Par Calculator Suite */}
+        <div className="bg-[#161b29] rounded-xl p-5 border border-[#3c4a42]/30 space-y-5 shadow-md lg:col-span-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#3c4a42]/20">
+            <div className="flex items-center gap-2">
+              <Calculator className="w-5 h-5 text-[#ffb95f]" />
+              <div>
+                <h2 className="font-headline-sm text-base font-bold text-[#dde2f5]">
+                  Duckworth-Lewis-Stern (DLS) Par Score Calculator
+                </h2>
+                <p className="font-body-sm text-xs text-[#bbcabf]">
+                  Official Standard Edition resource matrix • Fractional ball-by-ball precision
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Test Scenarios */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-label-caps text-[10px] text-[#86948a] uppercase">Presets:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setDlsTotalOvers(50);
+                  setDlsFirstInningsTotal(186);
+                  setDlsFirstInningsOvers('50.0');
+                  setDlsTeam2OversBatted('10.5');
+                  setDlsWicketsLost(1);
+                  setDlsTeam2CurrentRuns(54);
+                  updateDLS(50, 186, '50.0', '10.5', 1, 54);
+                }}
+                className="px-2.5 py-1 rounded-md bg-[#242a38] hover:bg-[#333948] text-[#ffb95f] font-stat-mono-sm text-[11px] font-bold border border-[#ffb95f]/40 transition-colors cursor-pointer"
+                title="50-Over match, 186 target, 10.5 overs bowled, 54/1"
+              >
+                ⭐ 50-Ov (186, 10.5 ov 54/1)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setDlsTotalOvers(20);
+                  setDlsFirstInningsTotal(175);
+                  setDlsFirstInningsOvers('20.0');
+                  setDlsTeam2OversBatted('8.2');
+                  setDlsWicketsLost(2);
+                  setDlsTeam2CurrentRuns(68);
+                  updateDLS(20, 175, '20.0', '8.2', 2, 68);
+                }}
+                className="px-2.5 py-1 rounded-md bg-[#1a1f2d] hover:bg-[#242a38] text-[#4edea3] font-stat-mono-sm text-[11px] font-bold border border-[#4edea3]/40 transition-colors cursor-pointer"
+                title="20-Over T20 match, 175 target, 8.2 overs, 68/2"
+              >
+                T20 (175, 8.2 ov 68/2)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setDlsTotalOvers(50);
+                  setDlsFirstInningsTotal(260);
+                  setDlsFirstInningsOvers('50.0');
+                  setDlsTeam2OversBatted('22.0');
+                  setDlsWicketsLost(4);
+                  setDlsTeam2CurrentRuns(118);
+                  updateDLS(50, 260, '50.0', '22.0', 4, 118);
+                }}
+                className="px-2.5 py-1 rounded-md bg-[#1a1f2d] hover:bg-[#242a38] text-[#dde2f5] font-stat-mono-sm text-[11px] font-bold border border-[#3c4a42]/40 transition-colors cursor-pointer"
+                title="50-Over match, 260 total, 22 overs, 118/4"
+              >
+                ODI Rain (260, 22 ov 118/4)
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 font-body-sm text-xs">
+          {/* Input Controls Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-body-sm text-xs">
+            {/* Match Total Overs */}
             <div>
               <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
-                1st Innings Total
+                Format Total Overs
               </label>
-              <input
-                type="number"
-                value={dlsFirstInningsTotal}
-                onChange={e => setDlsFirstInningsTotal(parseInt(e.target.value) || 178)}
-                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs"
-              />
+              <select
+                value={dlsTotalOvers}
+                onChange={e => {
+                  const ov = parseInt(e.target.value) || 50;
+                  setDlsTotalOvers(ov);
+                  setDlsFirstInningsOvers(`${ov}.0`);
+                  updateDLS(ov, dlsFirstInningsTotal, `${ov}.0`, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
+              >
+                <option value={50}>50 Overs (ODI)</option>
+                <option value={20}>20 Overs (T20)</option>
+                <option value={40}>40 Overs (Club/Pro40)</option>
+                <option value={10}>10 Overs (T10)</option>
+              </select>
             </div>
 
+            {/* 1st Innings Runs */}
             <div>
               <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
-                Overs Remaining
+                1st Innings Total Runs
               </label>
               <input
                 type="number"
-                value={dlsOversLeft}
-                onChange={e => setDlsOversLeft(parseInt(e.target.value) || 0)}
-                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs"
-              />
-            </div>
-
-            <div>
-              <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
-                Wickets Lost
-              </label>
-              <input
-                type="number"
-                max="9"
                 min="0"
+                value={dlsFirstInningsTotal}
+                onChange={e => {
+                  const runs = parseInt(e.target.value) || 0;
+                  setDlsFirstInningsTotal(runs);
+                  updateDLS(dlsTotalOvers, runs, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
+              />
+            </div>
+
+            {/* 1st Innings Overs Faced */}
+            <div>
+              <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
+                1st Innings Overs Faced
+              </label>
+              <input
+                type="text"
+                placeholder="50.0"
+                value={dlsFirstInningsOvers}
+                onChange={e => {
+                  setDlsFirstInningsOvers(e.target.value);
+                  updateDLS(dlsTotalOvers, dlsFirstInningsTotal, e.target.value, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
+              />
+            </div>
+
+            {/* 2nd Innings Overs Batted (e.g. 10.5) */}
+            <div>
+              <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
+                2nd Innings Overs Bowled
+              </label>
+              <input
+                type="text"
+                placeholder="10.5"
+                value={dlsTeam2OversBatted}
+                onChange={e => {
+                  setDlsTeam2OversBatted(e.target.value);
+                  updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, e.target.value, dlsWicketsLost, dlsTeam2CurrentRuns);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
+              />
+            </div>
+
+            {/* 2nd Innings Wickets Lost */}
+            <div>
+              <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
+                Wickets Lost (0 - 10)
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="10"
                 value={dlsWicketsLost}
-                onChange={e => setDlsWicketsLost(parseInt(e.target.value) || 0)}
-                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs"
+                onChange={e => {
+                  const w = Math.min(10, Math.max(0, parseInt(e.target.value) || 0));
+                  setDlsWicketsLost(w);
+                  updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, w, dlsTeam2CurrentRuns);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
+              />
+            </div>
+
+            {/* 2nd Innings Current Runs */}
+            <div>
+              <label className="font-label-caps text-[10px] text-[#bbcabf] uppercase block mb-1">
+                2nd Innings Current Score
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={dlsTeam2CurrentRuns}
+                onChange={e => {
+                  const runs = parseInt(e.target.value) || 0;
+                  setDlsTeam2CurrentRuns(runs);
+                  updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, runs);
+                }}
+                className="w-full bg-[#080e1b] border border-[#3c4a42] rounded px-3 py-2 text-[#dde2f5] font-stat-mono-sm text-xs focus:border-[#4edea3] outline-none"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-[#1a1f2d] p-4 rounded-xl border border-[#3c4a42]/30">
-            <button
-              onClick={calculateDLSPar}
-              className="px-4 py-2 rounded-lg bg-[#242a38] hover:bg-[#333948] text-[#ffb95f] font-stat-mono-sm text-xs font-bold border border-[#ffb95f]/40 cursor-pointer"
-              type="button"
-            >
-              Compute Par Target
-            </button>
-            <div className="text-right">
+          {/* Live Calculated Output Telemetry Display */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-[#1a1f2d] p-4 rounded-xl border border-[#3c4a42]/30">
+            {/* Par Score Card */}
+            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
               <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
-                Calculated DLS Par
+                DLS Par Score (Tie)
               </span>
-              <span className="font-stat-mono-lg text-2xl font-extrabold text-[#ffb95f]">
-                {calculatedPar !== null ? `${calculatedPar} Runs` : '142 Runs'}
+              <div className="my-1">
+                <span className="font-stat-mono-lg text-3xl font-extrabold text-[#ffb95f]">
+                  {dlsResult.parScore}
+                </span>
+                <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
+              </div>
+              <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                At {dlsTeam2OversBatted} ov with {dlsWicketsLost} wicket{dlsWicketsLost === 1 ? '' : 's'} down
               </span>
+            </div>
+
+            {/* Winning Target Card */}
+            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
+              <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                DLS Winning Target
+              </span>
+              <div className="my-1">
+                <span className="font-stat-mono-lg text-3xl font-extrabold text-[#4edea3]">
+                  {dlsResult.winningTarget}
+                </span>
+                <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
+              </div>
+              <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                Needed to win if match stopped now
+              </span>
+            </div>
+
+            {/* Current Match Standing */}
+            <div
+              className={`p-3 rounded-lg border flex flex-col justify-between ${
+                dlsResult.status === 'ahead'
+                  ? 'bg-[#10b981]/15 border-[#10b981]/50 text-[#4edea3]'
+                  : dlsResult.status === 'behind'
+                  ? 'bg-[#93000a]/20 border-[#ffb4ab]/50 text-[#ffb4ab]'
+                  : 'bg-[#ee9800]/15 border-[#ee9800]/50 text-[#ffb95f]'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-label-caps text-[10px] uppercase font-bold tracking-wider">
+                  Match Standing
+                </span>
+                {dlsResult.status === 'ahead' ? (
+                  <TrendingUp className="w-4 h-4" />
+                ) : dlsResult.status === 'behind' ? (
+                  <TrendingDown className="w-4 h-4" />
+                ) : (
+                  <Minus className="w-4 h-4" />
+                )}
+              </div>
+              <div className="my-1">
+                <span className="font-headline-sm text-xl font-black block leading-tight">
+                  {dlsResult.status === 'ahead'
+                    ? `+${dlsResult.runDifferential} Runs Ahead`
+                    : dlsResult.status === 'behind'
+                    ? `${dlsResult.runDifferential} Runs Behind`
+                    : 'Par Level (Tied)'}
+                </span>
+              </div>
+              <span className="font-body-sm text-[11px] font-semibold opacity-90">
+                {dlsResult.statusDescription}
+              </span>
+            </div>
+
+            {/* Resource Analytics Breakdown */}
+            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between font-stat-mono-sm text-xs">
+              <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                Resource Dynamics
+              </span>
+              <div className="space-y-1 my-1">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#bbcabf]">Team 1 Total:</span>
+                  <span className="text-[#dde2f5] font-bold">{dlsResult.team1Resources}%</span>
+                </div>
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#bbcabf]">Team 2 Remaining:</span>
+                  <span className="text-[#ffb95f] font-bold">{dlsResult.team2ResourcesRemaining}%</span>
+                </div>
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#bbcabf]">Team 2 Consumed:</span>
+                  <span className="text-[#4edea3] font-bold">{dlsResult.team2ResourcesUsed}%</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#bbcabf]">
+                Overs Left: {dlsResult.oversRemaining.toFixed(1)} ov
+              </span>
+            </div>
+          </div>
+
+          {/* Mathematical Explanation Card */}
+          <div className="p-3 bg-[#080e1b] rounded-lg border border-[#3c4a42]/20 flex items-start gap-2.5 text-xs text-[#bbcabf]">
+            <Info className="w-4 h-4 text-[#4edea3] shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <span className="font-bold text-[#dde2f5] block">
+                Calculation Breakdown (Laws of Cricket / DLS Standard Model)
+              </span>
+              <p className="leading-relaxed">
+                In a {dlsTotalOvers}-over match, Team 1 utilized {dlsResult.team1Resources}% of available match resources to score {dlsFirstInningsTotal} runs.
+                At {dlsTeam2OversBatted} overs with {dlsWicketsLost} wicket(s) lost, Team 2 retains {dlsResult.team2ResourcesRemaining}% of resources and has consumed{' '}
+                <strong className="text-[#4edea3]">{dlsResult.team2ResourcesUsed}%</strong>.
+                Par is computed as {dlsFirstInningsTotal} × ({dlsResult.team2ResourcesUsed}% / {dlsResult.team1Resources}%) ={' '}
+                <strong className="text-[#ffb95f]">{dlsResult.parScore} runs</strong>. With Team 2 currently at {dlsTeam2CurrentRuns} runs, they are{' '}
+                <strong className={dlsResult.runDifferential >= 0 ? 'text-[#4edea3]' : 'text-[#ffb4ab]'}>
+                  {dlsResult.runDifferential >= 0 ? `+${dlsResult.runDifferential}` : dlsResult.runDifferential} runs
+                </strong>{' '}
+                relative to the par score.
+              </p>
             </div>
           </div>
         </div>

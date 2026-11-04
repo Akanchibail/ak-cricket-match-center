@@ -6,6 +6,7 @@
 import React from 'react';
 import { Undo2, BookOpen, Maximize2, Bell, Volume2, VolumeX } from 'lucide-react';
 import { Match } from '../types/cricket';
+import { calculateMatchLiveDLS } from '../engine/dlsEngine';
 
 interface TopHeaderProps {
   match: Match;
@@ -26,6 +27,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 }) => {
   const currentInnings = match.innings[match.currentInningsIndex];
   const isChasing = match.currentInningsIndex === 1 && match.target !== null;
+  const liveDls = isChasing ? calculateMatchLiveDLS(match) : null;
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -85,13 +87,37 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           </div>
           <span className="text-[#86948a] font-stat-mono-sm">|</span>
           <div className="flex items-center gap-1.5">
-            <span className="font-label-caps text-[10px] text-[#86948a] uppercase">
-              {isChasing ? 'Target' : 'DLS Par'}
-            </span>
+            <span className="font-label-caps text-[10px] text-[#86948a] uppercase">Target</span>
             <span className="font-stat-mono-md text-sm font-bold text-[#ffb95f]">
-              {isChasing ? match.target : (match.dlsPar || 142)}
+              {match.target || (match.dlsPar || 142)}
             </span>
           </div>
+          {liveDls && (
+            <>
+              <span className="text-[#86948a] font-stat-mono-sm">|</span>
+              <div className="flex items-center gap-1.5">
+                <span className="font-label-caps text-[10px] text-[#86948a] uppercase">DLS Par</span>
+                <span className="font-stat-mono-md text-sm font-bold text-[#dde2f5]">
+                  {liveDls.parScore}
+                </span>
+                <span
+                  className={`text-[10px] font-stat-mono-sm font-bold px-1 rounded ${
+                    liveDls.status === 'ahead'
+                      ? 'text-[#4edea3] bg-[#10b981]/20'
+                      : liveDls.status === 'behind'
+                      ? 'text-[#ffb4ab] bg-[#93000a]/20'
+                      : 'text-[#ffb95f] bg-[#ee9800]/20'
+                  }`}
+                >
+                  {liveDls.status === 'ahead'
+                    ? `+${liveDls.runDifferential}`
+                    : liveDls.status === 'behind'
+                    ? `${liveDls.runDifferential}`
+                    : '='}
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
