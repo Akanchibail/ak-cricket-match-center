@@ -4,10 +4,10 @@
  */
 
 import React, { useState } from 'react';
-import { Sliders, CheckCircle2, Play, RefreshCw, Calculator, Database, ShieldAlert, Award, TrendingUp, TrendingDown, Minus, Info, Sparkles } from 'lucide-react';
+import { Sliders, CheckCircle2, Play, RefreshCw, Calculator, Database, ShieldAlert, Award, TrendingUp, TrendingDown, Minus, Info, Sparkles, CloudRain, ShieldCheck, ArrowRight } from 'lucide-react';
 import { recordDelivery, undoLastDelivery } from '../engine/cricketEngine';
 import { createDefaultMatch } from '../engine/defaultData';
-import { calculateDLS, DLSResult } from '../engine/dlsEngine';
+import { calculateDLS, DLSResult, calculateRainReduction, getRevisedTargetMatrix, RainReductionResult } from '../engine/dlsEngine';
 import { Match, DeliveryInput } from '../types/cricket';
 
 interface SettingsProps {
@@ -36,6 +36,9 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
   const [dlsTeam2OversBatted, setDlsTeam2OversBatted] = useState<string>('10.5');
   const [dlsWicketsLost, setDlsWicketsLost] = useState<number>(1);
   const [dlsTeam2CurrentRuns, setDlsTeam2CurrentRuns] = useState<number>(54);
+  const [dlsRevisedOvers, setDlsRevisedOvers] = useState<number>(40);
+  const [activeDlsTab, setActiveDlsTab] = useState<'reduction' | 'stoppage'>('reduction');
+
   const [dlsResult, setDlsResult] = useState<DLSResult>(() =>
     calculateDLS({
       totalOvers: 50,
@@ -47,13 +50,37 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
     })
   );
 
+  const [rainResult, setRainResult] = useState<RainReductionResult>(() =>
+    calculateRainReduction({
+      originalTotalOvers: 50,
+      team1TotalRuns: 186,
+      team1OversFaced: '50.0',
+      team2OversBowledAtInterruption: '10.5',
+      team2WicketsLostAtInterruption: 1,
+      team2RunsAtInterruption: 54,
+      revisedTotalOvers: 40,
+    })
+  );
+
+  const [reductionMatrix, setReductionMatrix] = useState<RainReductionResult[]>(() =>
+    getRevisedTargetMatrix({
+      originalTotalOvers: 50,
+      team1TotalRuns: 186,
+      team1OversFaced: '50.0',
+      team2OversBowledAtInterruption: '10.5',
+      team2WicketsLostAtInterruption: 1,
+      team2RunsAtInterruption: 54,
+    })
+  );
+
   const updateDLS = (
     totalOvers: number,
     t1Total: number,
     t1Overs: string,
     t2Overs: string,
     t2Wickets: number,
-    t2Runs: number
+    t2Runs: number,
+    revisedOvers = dlsRevisedOvers
   ) => {
     const res = calculateDLS({
       totalOvers,
@@ -64,6 +91,27 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
       team2CurrentRuns: t2Runs,
     });
     setDlsResult(res);
+
+    const rainRes = calculateRainReduction({
+      originalTotalOvers: totalOvers,
+      team1TotalRuns: t1Total,
+      team1OversFaced: t1Overs,
+      team2OversBowledAtInterruption: t2Overs,
+      team2WicketsLostAtInterruption: t2Wickets,
+      team2RunsAtInterruption: t2Runs,
+      revisedTotalOvers: revisedOvers,
+    });
+    setRainResult(rainRes);
+
+    const matrix = getRevisedTargetMatrix({
+      originalTotalOvers: totalOvers,
+      team1TotalRuns: t1Total,
+      team1OversFaced: t1Overs,
+      team2OversBowledAtInterruption: t2Overs,
+      team2WicketsLostAtInterruption: t2Wickets,
+      team2RunsAtInterruption: t2Runs,
+    });
+    setReductionMatrix(matrix);
   };
 
   const calculateDLSPar = () => {
@@ -73,7 +121,8 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
       dlsFirstInningsOvers,
       dlsTeam2OversBatted,
       dlsWicketsLost,
-      dlsTeam2CurrentRuns
+      dlsTeam2CurrentRuns,
+      dlsRevisedOvers
     );
   };
 
@@ -613,121 +662,404 @@ export const Settings: React.FC<SettingsProps> = ({ onResetToDefault, onResetAct
             </div>
           </div>
 
-          {/* Live Calculated Output Telemetry Display */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-[#1a1f2d] p-4 rounded-xl border border-[#3c4a42]/30">
-            {/* Par Score Card */}
-            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
-              <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
-                DLS Par Score (Tie)
-              </span>
-              <div className="my-1">
-                <span className="font-stat-mono-lg text-3xl font-extrabold text-[#ffb95f]">
-                  {dlsResult.parScore}
-                </span>
-                <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
-              </div>
-              <span className="font-body-sm text-[11px] text-[#bbcabf]">
-                At {dlsTeam2OversBatted} ov with {dlsWicketsLost} wicket{dlsWicketsLost === 1 ? '' : 's'} down
-              </span>
-            </div>
-
-            {/* Winning Target Card */}
-            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
-              <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
-                DLS Winning Target
-              </span>
-              <div className="my-1">
-                <span className="font-stat-mono-lg text-3xl font-extrabold text-[#4edea3]">
-                  {dlsResult.winningTarget}
-                </span>
-                <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
-              </div>
-              <span className="font-body-sm text-[11px] text-[#bbcabf]">
-                Needed to win if match stopped now
-              </span>
-            </div>
-
-            {/* Current Match Standing */}
-            <div
-              className={`p-3 rounded-lg border flex flex-col justify-between ${
-                dlsResult.status === 'ahead'
-                  ? 'bg-[#10b981]/15 border-[#10b981]/50 text-[#4edea3]'
-                  : dlsResult.status === 'behind'
-                  ? 'bg-[#93000a]/20 border-[#ffb4ab]/50 text-[#ffb4ab]'
-                  : 'bg-[#ee9800]/15 border-[#ee9800]/50 text-[#ffb95f]'
+          {/* Mode Switcher Tabs */}
+          <div className="flex items-center gap-2 border-b border-[#3c4a42]/30 pb-2">
+            <button
+              type="button"
+              onClick={() => setActiveDlsTab('reduction')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-stat-mono-sm text-xs font-bold transition-all cursor-pointer ${
+                activeDlsTab === 'reduction'
+                  ? 'bg-[#06B6D4] text-[#002b33] shadow-md'
+                  : 'bg-[#1a1f2d] hover:bg-[#242a38] text-[#dde2f5]'
               }`}
             >
-              <div className="flex items-center justify-between">
-                <span className="font-label-caps text-[10px] uppercase font-bold tracking-wider">
-                  Match Standing
-                </span>
-                {dlsResult.status === 'ahead' ? (
-                  <TrendingUp className="w-4 h-4" />
-                ) : dlsResult.status === 'behind' ? (
-                  <TrendingDown className="w-4 h-4" />
-                ) : (
-                  <Minus className="w-4 h-4" />
-                )}
-              </div>
-              <div className="my-1">
-                <span className="font-headline-sm text-xl font-black block leading-tight">
-                  {dlsResult.status === 'ahead'
-                    ? `+${dlsResult.runDifferential} Runs Ahead`
-                    : dlsResult.status === 'behind'
-                    ? `${dlsResult.runDifferential} Runs Behind`
-                    : 'Par Level (Tied)'}
-                </span>
-              </div>
-              <span className="font-body-sm text-[11px] font-semibold opacity-90">
-                {dlsResult.statusDescription}
-              </span>
-            </div>
-
-            {/* Resource Analytics Breakdown */}
-            <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between font-stat-mono-sm text-xs">
-              <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
-                Resource Dynamics
-              </span>
-              <div className="space-y-1 my-1">
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-[#bbcabf]">Team 1 Total:</span>
-                  <span className="text-[#dde2f5] font-bold">{dlsResult.team1Resources}%</span>
-                </div>
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-[#bbcabf]">Team 2 Remaining:</span>
-                  <span className="text-[#ffb95f] font-bold">{dlsResult.team2ResourcesRemaining}%</span>
-                </div>
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-[#bbcabf]">Team 2 Consumed:</span>
-                  <span className="text-[#4edea3] font-bold">{dlsResult.team2ResourcesUsed}%</span>
-                </div>
-              </div>
-              <span className="text-[10px] text-[#bbcabf]">
-                Overs Left: {dlsResult.oversRemaining.toFixed(1)} ov
-              </span>
-            </div>
+              <CloudRain className="w-4 h-4" />
+              <span>Rain Interruption: Reduced Overs Target (30, 40, etc.)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveDlsTab('stoppage')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-stat-mono-sm text-xs font-bold transition-all cursor-pointer ${
+                activeDlsTab === 'stoppage'
+                  ? 'bg-[#ffb95f] text-[#472a00] shadow-md'
+                  : 'bg-[#1a1f2d] hover:bg-[#242a38] text-[#dde2f5]'
+              }`}
+            >
+              <Calculator className="w-4 h-4" />
+              <span>Current Stoppage Par & Abandonment</span>
+            </button>
           </div>
 
-          {/* Mathematical Explanation Card */}
-          <div className="p-3 bg-[#080e1b] rounded-lg border border-[#3c4a42]/20 flex items-start gap-2.5 text-xs text-[#bbcabf]">
-            <Info className="w-4 h-4 text-[#4edea3] shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <span className="font-bold text-[#dde2f5] block">
-                Calculation Breakdown (Laws of Cricket / DLS Standard Model)
-              </span>
-              <p className="leading-relaxed">
-                In a {dlsTotalOvers}-over match, Team 1 utilized {dlsResult.team1Resources}% of available match resources to score {dlsFirstInningsTotal} runs.
-                At {dlsTeam2OversBatted} overs with {dlsWicketsLost} wicket(s) lost, Team 2 retains {dlsResult.team2ResourcesRemaining}% of resources and has consumed{' '}
-                <strong className="text-[#4edea3]">{dlsResult.team2ResourcesUsed}%</strong>.
-                Par is computed as {dlsFirstInningsTotal} × ({dlsResult.team2ResourcesUsed}% / {dlsResult.team1Resources}%) ={' '}
-                <strong className="text-[#ffb95f]">{dlsResult.parScore} runs</strong>. With Team 2 currently at {dlsTeam2CurrentRuns} runs, they are{' '}
-                <strong className={dlsResult.runDifferential >= 0 ? 'text-[#4edea3]' : 'text-[#ffb4ab]'}>
-                  {dlsResult.runDifferential >= 0 ? `+${dlsResult.runDifferential}` : dlsResult.runDifferential} runs
-                </strong>{' '}
-                relative to the par score.
-              </p>
+          {/* TAB 1: Rain Interruption & Target Reduction Suite */}
+          {activeDlsTab === 'reduction' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              {/* Overs Reduction Target Selector */}
+              <div className="bg-[#1a1f2d] p-4 rounded-xl border border-[#3c4a42]/30 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="font-label-caps text-[11px] text-[#06B6D4] uppercase font-bold block">
+                      Match Shortened Due to Rain: Revised Total Overs
+                    </label>
+                    <span className="text-[11px] text-[#bbcabf] font-body-sm">
+                      Select new total match overs for Team 2 (Original: {dlsTotalOvers} ov, Batted so far: {dlsTeam2OversBatted} ov)
+                    </span>
+                  </div>
+
+                  {/* Quick Select Buttons */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {[45, 40, 35, 30, 25, 20].map(ov => (
+                      <button
+                        key={ov}
+                        type="button"
+                        onClick={() => {
+                          setDlsRevisedOvers(ov);
+                          updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns, ov);
+                        }}
+                        className={`px-3 py-1 rounded-lg font-stat-mono-sm text-xs font-bold transition-all cursor-pointer border ${
+                          dlsRevisedOvers === ov
+                            ? 'bg-[#06B6D4] text-[#002b33] border-[#06B6D4] shadow-md'
+                            : 'bg-[#242a38] hover:bg-[#333948] text-[#dde2f5] border-[#3c4a42]/40'
+                        }`}
+                      >
+                        {ov} Ov
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Slider / Number Input for Any X Overs */}
+                <div className="flex items-center gap-4 pt-1">
+                  <div className="flex-1">
+                    <input
+                      type="range"
+                      min={Math.max(10, Math.ceil(parseFloat(dlsTeam2OversBatted) || 0) + 1)}
+                      max={dlsTotalOvers - 1}
+                      value={dlsRevisedOvers}
+                      onChange={e => {
+                        const ov = parseInt(e.target.value) || 30;
+                        setDlsRevisedOvers(ov);
+                        updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns, ov);
+                      }}
+                      className="w-full accent-[#06B6D4] cursor-pointer"
+                    />
+                    <div className="flex justify-between text-[10px] text-[#86948a] font-stat-mono-sm mt-0.5">
+                      <span>Min: {Math.max(10, Math.ceil(parseFloat(dlsTeam2OversBatted) || 0) + 1)} ov</span>
+                      <span>Max: {dlsTotalOvers - 1} ov</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-stat-mono-sm text-xs text-[#bbcabf]">Custom:</span>
+                    <input
+                      type="number"
+                      min={Math.max(10, Math.ceil(parseFloat(dlsTeam2OversBatted) || 0) + 1)}
+                      max={dlsTotalOvers - 1}
+                      value={dlsRevisedOvers}
+                      onChange={e => {
+                        const ov = Math.min(dlsTotalOvers - 1, Math.max(10, parseInt(e.target.value) || 20));
+                        setDlsRevisedOvers(ov);
+                        updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns, ov);
+                      }}
+                      className="w-20 bg-[#080e1b] border border-[#06B6D4]/50 rounded px-2.5 py-1 text-center font-stat-mono-sm text-sm font-bold text-[#06B6D4] outline-none"
+                    />
+                    <span className="font-stat-mono-sm text-xs text-[#bbcabf]">Overs</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Revised Target Hero Display Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-[#1a1f2d] p-4 rounded-xl border border-[#06B6D4]/40 shadow-lg">
+                {/* Revised Target */}
+                <div className="bg-[#242a38] p-3.5 rounded-lg border border-[#06B6D4]/50 flex flex-col justify-between">
+                  <span className="font-label-caps text-[10px] text-[#06B6D4] uppercase font-bold tracking-wider block">
+                    DLS Revised Target
+                  </span>
+                  <div className="my-1">
+                    <span className="font-stat-mono-lg text-4xl font-extrabold text-[#4edea3]">
+                      {rainResult.revisedTarget}
+                    </span>
+                    <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">
+                      Runs in {rainResult.revisedTotalOvers}.0 ov
+                    </span>
+                  </div>
+                  <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                    Reduced from original {dlsFirstInningsTotal + 1} target
+                  </span>
+                </div>
+
+                {/* Runs Needed to Win */}
+                <div className="bg-[#242a38] p-3.5 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
+                  <span className="font-label-caps text-[10px] text-[#ffb95f] uppercase font-bold tracking-wider block">
+                    Runs Needed To Win
+                  </span>
+                  <div className="my-1">
+                    <span className="font-stat-mono-lg text-4xl font-extrabold text-[#ffb95f]">
+                      {rainResult.runsNeededToWin}
+                    </span>
+                    <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">
+                      off {rainResult.oversRemainingFormatted} ov
+                    </span>
+                  </div>
+                  <span className="font-stat-mono-sm text-[11px] text-[#dde2f5] font-semibold">
+                    Req. Run Rate: {rainResult.requiredRunRate} RPO
+                  </span>
+                </div>
+
+                {/* Bowler Quota Under Law 17 */}
+                <div className="bg-[#242a38] p-3.5 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
+                  <span className="font-label-caps text-[10px] text-[#4edea3] uppercase font-bold tracking-wider block">
+                    Bowler Max Quota
+                  </span>
+                  <div className="my-1 flex items-center gap-2">
+                    <ShieldCheck className="w-6 h-6 text-[#4edea3]" />
+                    <span className="font-stat-mono-lg text-3xl font-extrabold text-[#dde2f5]">
+                      {rainResult.maxOversPerBowler}.0 ov
+                    </span>
+                  </div>
+                  <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                    Strict 1/5th format quota enforced
+                  </span>
+                </div>
+
+                {/* Resource Loss Due to Rain */}
+                <div className="bg-[#242a38] p-3.5 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between font-stat-mono-sm text-xs">
+                  <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                    Resource Analytics
+                  </span>
+                  <div className="space-y-1 my-1 text-[11px]">
+                    <div className="flex justify-between">
+                      <span className="text-[#bbcabf]">Lost to Rain:</span>
+                      <span className="text-[#ffb4ab] font-bold">{rainResult.resourceLostDueToRain}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#bbcabf]">Retained Total:</span>
+                      <span className="text-[#4edea3] font-bold">{rainResult.team2TotalResource}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#bbcabf]">Balls Left:</span>
+                      <span className="text-[#dde2f5] font-bold">
+                        {Math.round(rainResult.oversRemaining * 6)} balls
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-[#bbcabf]">
+                    {rainResult.oversRemainingFormatted} overs remaining
+                  </span>
+                </div>
+              </div>
+
+              {/* Comparative Multi-Scenario Reduction Matrix Table */}
+              <div className="bg-[#080e1b] rounded-xl p-4 border border-[#3c4a42]/30 space-y-2">
+                <div className="flex items-center justify-between pb-1">
+                  <span className="font-label-caps text-xs text-[#dde2f5] font-bold uppercase flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#ffb95f]" />
+                    Quick Target Reference Matrix (If Match Reduced To Any X Overs)
+                  </span>
+                  <span className="font-stat-mono-sm text-[11px] text-[#bbcabf]">
+                    Current State: {dlsTeam2CurrentRuns}/{dlsWicketsLost} ({dlsTeam2OversBatted} ov)
+                  </span>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left font-stat-mono-sm text-xs">
+                    <thead>
+                      <tr className="border-b border-[#3c4a42]/30 text-[#86948a] font-label-caps text-[10px] uppercase">
+                        <th className="py-2 px-3">Reduced Match</th>
+                        <th className="py-2 px-3">Revised Target</th>
+                        <th className="py-2 px-3">Runs Needed</th>
+                        <th className="py-2 px-3">Overs Left</th>
+                        <th className="py-2 px-3">Req. Rate</th>
+                        <th className="py-2 px-3">Max Bowler Quota</th>
+                        <th className="py-2 px-3">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#3c4a42]/20">
+                      {reductionMatrix.map(row => {
+                        const isSelected = row.revisedTotalOvers === dlsRevisedOvers;
+                        return (
+                          <tr
+                            key={row.revisedTotalOvers}
+                            className={`transition-colors ${
+                              isSelected
+                                ? 'bg-[#06B6D4]/15 text-[#dde2f5] font-bold'
+                                : 'hover:bg-[#1a1f2d] text-[#bbcabf]'
+                            }`}
+                          >
+                            <td className="py-2 px-3 font-bold text-[#dde2f5]">
+                              {row.revisedTotalOvers} Overs
+                            </td>
+                            <td className="py-2 px-3 text-[#4edea3] font-bold">
+                              {row.revisedTarget} Runs
+                            </td>
+                            <td className="py-2 px-3 text-[#ffb95f] font-semibold">
+                              {row.runsNeededToWin} Runs
+                            </td>
+                            <td className="py-2 px-3">
+                              {row.oversRemainingFormatted} ov
+                            </td>
+                            <td className="py-2 px-3 font-semibold">
+                              {row.requiredRunRate} RPO
+                            </td>
+                            <td className="py-2 px-3">
+                              {row.maxOversPerBowler}.0 ov
+                            </td>
+                            <td className="py-2 px-3">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setDlsRevisedOvers(row.revisedTotalOvers);
+                                  updateDLS(dlsTotalOvers, dlsFirstInningsTotal, dlsFirstInningsOvers, dlsTeam2OversBatted, dlsWicketsLost, dlsTeam2CurrentRuns, row.revisedTotalOvers);
+                                }}
+                                className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+                                  isSelected
+                                    ? 'bg-[#06B6D4] text-[#002b33]'
+                                    : 'bg-[#242a38] hover:bg-[#333948] text-[#dde2f5]'
+                                }`}
+                              >
+                                {isSelected ? 'Active' : 'Select'}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Detailed Mathematical Explanation */}
+              <div className="p-3 bg-[#080e1b] rounded-lg border border-[#3c4a42]/20 flex items-start gap-2.5 text-xs text-[#bbcabf]">
+                <Info className="w-4 h-4 text-[#06B6D4] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <span className="font-bold text-[#dde2f5] block">
+                    Duckworth-Lewis-Stern Reduction Rule
+                  </span>
+                  <p className="leading-relaxed font-body-sm">
+                    {rainResult.explanation}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* TAB 2: Match Stoppage / Abandonment Par Telemetry */}
+          {activeDlsTab === 'stoppage' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-[#1a1f2d] p-4 rounded-xl border border-[#3c4a42]/30">
+                {/* Par Score Card */}
+                <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
+                  <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                    DLS Par Score (Tie)
+                  </span>
+                  <div className="my-1">
+                    <span className="font-stat-mono-lg text-3xl font-extrabold text-[#ffb95f]">
+                      {dlsResult.parScore}
+                    </span>
+                    <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
+                  </div>
+                  <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                    At {dlsTeam2OversBatted} ov with {dlsWicketsLost} wicket{dlsWicketsLost === 1 ? '' : 's'} down
+                  </span>
+                </div>
+
+                {/* Winning Target Card */}
+                <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between">
+                  <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                    DLS Winning Target
+                  </span>
+                  <div className="my-1">
+                    <span className="font-stat-mono-lg text-3xl font-extrabold text-[#4edea3]">
+                      {dlsResult.winningTarget}
+                    </span>
+                    <span className="text-xs text-[#bbcabf] ml-1.5 font-semibold">Runs</span>
+                  </div>
+                  <span className="font-body-sm text-[11px] text-[#bbcabf]">
+                    Needed to win if match stopped now
+                  </span>
+                </div>
+
+                {/* Current Match Standing */}
+                <div
+                  className={`p-3 rounded-lg border flex flex-col justify-between ${
+                    dlsResult.status === 'ahead'
+                      ? 'bg-[#10b981]/15 border-[#10b981]/50 text-[#4edea3]'
+                      : dlsResult.status === 'behind'
+                      ? 'bg-[#93000a]/20 border-[#ffb4ab]/50 text-[#ffb4ab]'
+                      : 'bg-[#ee9800]/15 border-[#ee9800]/50 text-[#ffb95f]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-label-caps text-[10px] uppercase font-bold tracking-wider">
+                      Match Standing
+                    </span>
+                    {dlsResult.status === 'ahead' ? (
+                      <TrendingUp className="w-4 h-4" />
+                    ) : dlsResult.status === 'behind' ? (
+                      <TrendingDown className="w-4 h-4" />
+                    ) : (
+                      <Minus className="w-4 h-4" />
+                    )}
+                  </div>
+                  <div className="my-1">
+                    <span className="font-headline-sm text-xl font-black block leading-tight">
+                      {dlsResult.status === 'ahead'
+                        ? `+${dlsResult.runDifferential} Runs Ahead`
+                        : dlsResult.status === 'behind'
+                        ? `${dlsResult.runDifferential} Runs Behind`
+                        : 'Par Level (Tied)'}
+                    </span>
+                  </div>
+                  <span className="font-body-sm text-[11px] font-semibold opacity-90">
+                    {dlsResult.statusDescription}
+                  </span>
+                </div>
+
+                {/* Resource Analytics Breakdown */}
+                <div className="bg-[#242a38] p-3 rounded-lg border border-[#3c4a42]/40 flex flex-col justify-between font-stat-mono-sm text-xs">
+                  <span className="font-label-caps text-[10px] text-[#bbcabf] uppercase block">
+                    Resource Dynamics
+                  </span>
+                  <div className="space-y-1 my-1">
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#bbcabf]">Team 1 Total:</span>
+                      <span className="text-[#dde2f5] font-bold">{dlsResult.team1Resources}%</span>
+                    </div>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#bbcabf]">Team 2 Remaining:</span>
+                      <span className="text-[#ffb95f] font-bold">{dlsResult.team2ResourcesRemaining}%</span>
+                    </div>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#bbcabf]">Team 2 Consumed:</span>
+                      <span className="text-[#4edea3] font-bold">{dlsResult.team2ResourcesUsed}%</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-[#bbcabf]">
+                    Overs Left: {dlsResult.oversRemaining.toFixed(1)} ov
+                  </span>
+                </div>
+              </div>
+
+              {/* Mathematical Explanation Card */}
+              <div className="p-3 bg-[#080e1b] rounded-lg border border-[#3c4a42]/20 flex items-start gap-2.5 text-xs text-[#bbcabf]">
+                <Info className="w-4 h-4 text-[#4edea3] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <span className="font-bold text-[#dde2f5] block">
+                    Calculation Breakdown (Laws of Cricket / DLS Standard Model)
+                  </span>
+                  <p className="leading-relaxed">
+                    In a {dlsTotalOvers}-over match, Team 1 utilized {dlsResult.team1Resources}% of available match resources to score {dlsFirstInningsTotal} runs.
+                    At {dlsTeam2OversBatted} overs with {dlsWicketsLost} wicket(s) lost, Team 2 retains {dlsResult.team2ResourcesRemaining}% of resources and has consumed{' '}
+                    <strong className="text-[#4edea3]">{dlsResult.team2ResourcesUsed}%</strong>.
+                    Par is computed as {dlsFirstInningsTotal} × ({dlsResult.team2ResourcesUsed}% / {dlsResult.team1Resources}%) ={' '}
+                    <strong className="text-[#ffb95f]">{dlsResult.parScore} runs</strong>. With Team 2 currently at {dlsTeam2CurrentRuns} runs, they are{' '}
+                    <strong className={dlsResult.runDifferential >= 0 ? 'text-[#4edea3]' : 'text-[#ffb4ab]'}>
+                      {dlsResult.runDifferential >= 0 ? `+${dlsResult.runDifferential}` : dlsResult.runDifferential} runs
+                    </strong>{' '}
+                    relative to the par score.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Section 3: Data Management & Reset */}

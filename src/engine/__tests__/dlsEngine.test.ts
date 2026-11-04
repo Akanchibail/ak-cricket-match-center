@@ -9,6 +9,7 @@ import {
   getDLSResource,
   parseOversToDecimal,
   calculateMatchLiveDLS,
+  calculateRainReduction,
 } from '../dlsEngine';
 
 describe('Duckworth-Lewis-Stern (DLS) Engine Tests', () => {
@@ -148,5 +149,57 @@ describe('Duckworth-Lewis-Stern (DLS) Engine Tests', () => {
         ],
       })
     ).toBeNull();
+  });
+
+  it('8. calculateRainReduction: mid-innings interruption at 10.5 ov 54/1 reduced to 40 or 30 overs', () => {
+    // Exact user scenario: 50 ov match, 186 runs.
+    // Rain halts play at 10.5 ov with 54/1. Match reduced to 40 overs.
+    const res40 = calculateRainReduction({
+      originalTotalOvers: 50,
+      team1TotalRuns: 186,
+      team2OversBowledAtInterruption: '10.5',
+      team2WicketsLostAtInterruption: 1,
+      team2RunsAtInterruption: 54,
+      revisedTotalOvers: 40,
+    });
+
+    expect(res40.revisedTotalOvers).toBe(40);
+    expect(res40.revisedTarget).toBe(163);
+    expect(res40.runsNeededToWin).toBe(109);
+    expect(res40.oversRemainingFormatted).toBe('29.1');
+    expect(res40.maxOversPerBowler).toBe(8); // 40 / 5 = 8
+
+    // Match reduced to 30 overs
+    const res30 = calculateRainReduction({
+      originalTotalOvers: 50,
+      team1TotalRuns: 186,
+      team2OversBowledAtInterruption: '10.5',
+      team2WicketsLostAtInterruption: 1,
+      team2RunsAtInterruption: 54,
+      revisedTotalOvers: 30,
+    });
+
+    expect(res30.revisedTotalOvers).toBe(30);
+    expect(res30.revisedTarget).toBe(130);
+    expect(res30.runsNeededToWin).toBe(76);
+    expect(res30.oversRemainingFormatted).toBe('19.1');
+    expect(res30.maxOversPerBowler).toBe(6); // 30 / 5 = 6
+  });
+
+  it('9. calculateRainReduction: pre-innings reduction (before 2nd innings begins)', () => {
+    // 50 ov match, 186 runs. Rain delays 2nd innings start, reduced to 30 overs.
+    const res = calculateRainReduction({
+      originalTotalOvers: 50,
+      team1TotalRuns: 186,
+      team2OversBowledAtInterruption: 0,
+      team2WicketsLostAtInterruption: 0,
+      team2RunsAtInterruption: 0,
+      revisedTotalOvers: 30,
+    });
+
+    expect(res.revisedTotalOvers).toBe(30);
+    expect(res.revisedTarget).toBe(140);
+    expect(res.runsNeededToWin).toBe(140);
+    expect(res.maxOversPerBowler).toBe(6);
   });
 });

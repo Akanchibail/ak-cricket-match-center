@@ -225,3 +225,128 @@ export function calculateMatchLiveDLS(match: {
     team2CurrentRuns: secondInn.runs || 0,
   });
 }
+
+export interface RainReductionInput {
+  originalTotalOvers: number;
+  team1TotalRuns: number;
+  team1OversFaced?: number | string;
+  team2OversBowledAtInterruption: number | string;
+  team2WicketsLostAtInterruption: number;
+  team2RunsAtInterruption: number;
+  revisedTotalOvers: number;
+}
+
+export interface RainReductionResult {
+  revisedTotalOvers: number;
+  revisedTarget: number;
+  runsNeededToWin: number;
+  oversRemaining: number;
+  oversRemainingFormatted: string;
+  requiredRunRate: number;
+  maxOversPerBowler: number;
+  team2TotalResource: number;
+  team1TotalResource: number;
+  resourceLostDueToRain: number;
+  explanation: string;
+}
+
+/**
+ * Calculates the exact revised target for Team 2 when a match is reduced due to rain
+ * (either before Team 2 begins, or interrupted mid-innings e.g. at 10.5 overs 54/1).
+ */
+export function calculateRainReduction(input: RainReductionInput): RainReductionResult {
+  const originalOvers = Math.max(1, input.originalTotalOvers || 50);
+  const team1Runs = Math.max(0, input.team1TotalRuns || 0);
+  const team1OversDec = input.team1OversFaced !== undefined
+    ? parseOversToDecimal(input.team1OversFaced)
+    : originalOvers;
+  const oversBowledDec = parseOversToDecimal(input.team2OversBowledAtInterruption);
+  const wicketsLost = Math.min(10, Math.max(0, input.team2WicketsLostAtInterruption || 0));
+  const runsSoFar = Math.max(0, input.team2RunsAtInterruption || 0);
+
+  // The revised total overs must be at least the overs already bowled
+  const revisedOvers = Math.max(Math.ceil(oversBowledDec), input.revisedTotalOvers);
+  const oversRemainingDec = Math.max(0, revisedOvers - oversBowledDec);
+
+  // Format overs remaining (e.g. 29.1)
+  const remWhole = Math.floor(oversRemainingDec);
+  const remBalls = Math.round((oversRemainingDec - remWhole) * 6);
+  const oversRemainingFormatted = `${remWhole}.${remBalls}`;
+
+  const R1 = getDLSResource(team1OversDec, 0) || 100;
+  let R2 = 0;
+  let resourceLost = 0;
+
+  if (oversBowledDec <= 0) {
+    // Interruption occurred before 2nd innings began
+    R2 = getDLSResource(revisedOvers, 0);
+    const R_orig = getDLSResource(originalOvers, 0);
+    resourceLost = Math.max(0, R_orig - R2);
+  } else {
+    // Interruption occurred during 2nd innings
+    const R_start = getDLSResource(originalOvers, 0);
+    const oversLeftAtStop = Math.max(0, originalOvers - oversBowledDec);
+    const R_at_stop = getDLSResource(oversLeftAtStop, wicketsLost);
+    const R_used_before = R_start - R_at_stop;
+
+    const R_at_resume = getDLSResource(oversRemainingDec, wicketsLost);
+    resourceLost = Math.max(0, R_at_stop - R_at_resume);
+    R2 = R_used_before + R_at_resume;
+  }
+
+  // DLS Revised Target formula
+  let revisedTarget: number;
+  if (R2 <= R1) {
+    revisedTarget = Math.floor(team1Runs * (R2 / R1)) + 1;
+  } else {
+    const benchmark = (G50_DEFAULT * originalOvers) / 50;
+    revisedTarget = Math.floor(team1Runs + ((R2 - R1) / 100) * benchmark) + 1;
+  }
+
+  const runsNeededToWin = Math.max(0, revisedTarget - runsSoFar);
+  const requiredRunRate = oversRemainingDec > 0
+    ? Number((runsNeededToWin / oversRemainingDec).toFixed(2))
+    : 0;
+  const maxOversPerBowler = Math.ceil(revisedOvers / 5);
+
+  const explanation = oversBowledDec <= 0
+    ? `Match reduced from ${originalOvers} to ${revisedOvers} overs before 2nd innings. Available resources: ${R2.toFixed(1)}% vs Team 1's ${R1.toFixed(1)}%. Revised Target: ${revisedTarget} runs.`
+    : `Play stopped at ${input.team2OversBowledAtInterruption} ov (${runsSoFar}/${wicketsLost}) and resumed with match reduced to ${revisedOvers} ov. Team 2 lost ${resourceLost.toFixed(1)}% resources to rain, retaining ${R2.toFixed(1)}% total. Revised Target: ${revisedTarget} runs (${runsNeededToWin} runs needed from ${oversRemainingFormatted} overs, RRR ${requiredRunRate}).`;
+
+  return {
+    revisedTotalOvers: revisedOvers,
+    revisedTarget,
+    runsNeededToWin,
+    oversRemaining: Number(oversRemainingDec.toFixed(3)),
+    oversRemainingFormatted,
+    requiredRunRate,
+    maxOversPerBowler,
+    team2TotalResource: Number(R2.toFixed(2)),
+    team1TotalResource: Number(R1.toFixed(2)),
+    resourceLostDueToRain: Number(resourceLost.toFixed(2)),
+    explanation,
+  };
+}
+
+/**
+ * Returns a comparison matrix of revised targets across standard reduction increments
+ * (e.g. 45, 40, 35, 30, 25, 20 overs) for instant preview.
+ */
+export function getRevisedTargetMatrix(
+  input: Omit<RainReductionInput, 'revisedTotalOvers'>
+): RainReductionResult[] {
+  const oversBowled = parseOversToDecimal(input.team2OversBowledAtInterruption);
+  const minOvers = Math.max(10, Math.ceil(oversBowled) + 1);
+  const original = input.originalTotalOvers || 50;
+
+  const candidateOvers = [45, 40, 35, 30, 25, 20, 15]
+    .filter(ov => ov < original && ov >= minOvers)
+    .sort((a, b) => b - a);
+
+  return candidateOvers.map(ov =>
+    calculateRainReduction({
+      ...input,
+      revisedTotalOvers: ov,
+    })
+  );
+}

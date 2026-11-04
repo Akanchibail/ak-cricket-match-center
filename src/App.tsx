@@ -264,6 +264,7 @@ export default function App() {
               onSetNextBowler={handleSetNextBowler}
               onUndo={handleUndo}
               canUndo={history.length > 1}
+              onUpdateMatch={handleUpdateMatch}
             />
           )}
 

@@ -21,6 +21,7 @@ Rather than writing the application code manually, I used AI tools throughout th
 - **Scorecards:** View batting and bowling performance.
 - **Match Statistics:** Track partnerships, fall of wickets, and run rates.
 - **Visual Analytics:** Explore match data through run-rate trends, worm charts, and wagon wheels.
+- **Duckworth-Lewis-Stern (DLS) & Rain Delay Engine:** Real-time ball-by-ball DLS par scores, match abandonment evaluation, and mid-innings rain reduction calculators (revising targets to 40, 30, or custom overs with Law 17 bowler quota scaling).
 - **Undo Functionality:** Reverse scoring actions when required.
 - **Browser-Based Storage:** Retain match information using local browser storage.
 

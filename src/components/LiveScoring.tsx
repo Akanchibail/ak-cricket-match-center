@@ -4,12 +4,13 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { RotateCcw, Undo2 } from 'lucide-react';
+import { RotateCcw, Undo2, CloudRain } from 'lucide-react';
 import { Match, DeliveryInput, WagonShot } from '../types/cricket';
 import { ExtrasModal } from './modals/ExtrasModal';
 import { WicketModal } from './modals/WicketModal';
 import { PenaltyModal } from './modals/PenaltyModal';
 import { BowlerChangeModal } from './modals/BowlerChangeModal';
+import { RainDelayModal } from './modals/RainDelayModal';
 import { getMaxOversPerBowler, isBowlerEligible } from '../engine/cricketEngine';
 import { calculateMatchLiveDLS } from '../engine/dlsEngine';
 
@@ -21,6 +22,7 @@ interface LiveScoringProps {
   onSetNextBowler: (bowlerId: string) => void;
   onUndo?: () => void;
   canUndo?: boolean;
+  onUpdateMatch?: (updated: Match) => void;
 }
 
 export const LiveScoring: React.FC<LiveScoringProps> = ({
@@ -31,11 +33,13 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
   onSetNextBowler,
   onUndo,
   canUndo = false,
+  onUpdateMatch,
 }) => {
   const [isExtrasModalOpen, setIsExtrasModalOpen] = useState(false);
   const [isWicketModalOpen, setIsWicketModalOpen] = useState(false);
   const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
   const [isBowlerModalOpen, setIsBowlerModalOpen] = useState(false);
+  const [isRainModalOpen, setIsRainModalOpen] = useState(false);
   const [wagonView, setWagonView] = useState<'striker' | 'innings'>('innings');
   const [aimedWagonZone, setAimedWagonZone] = useState<{ angle: number; distance: number } | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -109,6 +113,21 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
     setTimeout(() => {
       setToastMessage(null);
     }, 2000);
+  };
+
+  const handleApplyRainReduction = (revisedOvers: number, revisedTarget: number) => {
+    if (onUpdateMatch) {
+      const updatedMatch: Match = {
+        ...match,
+        totalOvers: revisedOvers,
+        target: revisedTarget,
+        dlsPar: revisedTarget - 1,
+        powerplayDetails: `DLS REVISED (${revisedOvers} OV)`,
+        updatedAt: new Date().toISOString(),
+      };
+      onUpdateMatch(updatedMatch);
+      showToast(`DLS Target revised to ${revisedTarget} runs in ${revisedOvers} overs`);
+    }
   };
 
   const handleRecordRun = (runs: number) => {
@@ -252,6 +271,17 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
                 <span className="font-label-caps text-[10px] text-[#bbcabf]">
                   DLS PAR: {match.dlsPar || 142}
                 </span>
+              )}
+              {match.format !== 'Test' && (
+                <button
+                  type="button"
+                  onClick={() => setIsRainModalOpen(true)}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded bg-[#06B6D4]/15 hover:bg-[#06B6D4]/30 text-[#06B6D4] font-stat-mono-sm text-[10px] font-bold border border-[#06B6D4]/40 cursor-pointer transition-colors shadow-sm"
+                  title="Rain Delay: Recalculate target for reduced match overs (DLS)"
+                >
+                  <CloudRain className="w-3 h-3" />
+                  <span>Rain Delay / Revise Overs</span>
+                </button>
               )}
             </div>
           </div>
@@ -1310,6 +1340,13 @@ export const LiveScoring: React.FC<LiveScoringProps> = ({
         onClose={() => setIsBowlerModalOpen(false)}
         onSelectBowler={onChangeBowler}
         match={match}
+      />
+
+      <RainDelayModal
+        isOpen={isRainModalOpen}
+        onClose={() => setIsRainModalOpen(false)}
+        match={match}
+        onApplyReduction={handleApplyRainReduction}
       />
     </div>
   );
